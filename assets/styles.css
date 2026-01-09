@@ -367,9 +367,9 @@ header {
     width: 210mm;
     min-height: 297mm;
     padding: 3rem 4rem;
-    /* Increased scale to fill the new 50% width space */
-    transform: scale(0.58);
-    margin-bottom: -125mm;
+    /* Maximized scale for 50/50 balanced layout */
+    transform: scale(0.65);
+    margin-bottom: -104mm;
     border: 1px solid #cbd5e0;
     flex-shrink: 0;
     position: relative;
@@ -392,9 +392,9 @@ header {
 
 @media (min-height: 900px) {
     .worksheet-preview-mini {
-        transform: scale(0.6);
-        /* Larger on high res */
-        margin-bottom: -120mm;
+        transform: scale(0.72);
+        /* Enhanced scale for high-res displays */
+        margin-bottom: -83mm;
     }
 }
 
