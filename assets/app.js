@@ -69,7 +69,10 @@ class WorksheetRenderer {
         const wsPage = document.createElement('div');
         wsPage.className = 'worksheet-container';
 
-        // Header
+        const innerContent = document.createElement('div');
+        innerContent.className = 'worksheet-inner-content';
+
+        // Header - Split Layout
         const header = document.createElement('div');
         header.className = 'worksheet-header';
 
@@ -78,10 +81,11 @@ class WorksheetRenderer {
         header.innerHTML = `
             <div class="worksheet-title">${opDisplay} Practice</div>
             <div class="worksheet-meta">
-                Name: ____________________ Date: _________
+                <div>Date: ____________________</div>
+                <div>Score: _________ / ${data.questions.length}</div>
             </div>
         `;
-        wsPage.appendChild(header);
+        innerContent.appendChild(header);
 
         const isHorizontal = data.config.layout === 'horizontal';
 
@@ -150,7 +154,8 @@ class WorksheetRenderer {
             grid.appendChild(el);
         });
 
-        wsPage.appendChild(grid);
+        innerContent.appendChild(grid);
+        wsPage.appendChild(innerContent);
         this.container.appendChild(wsPage);
 
         // Render Answer Key (Sequential in the same container for v32 flow)
@@ -199,10 +204,13 @@ class WorksheetRenderer {
         const section = document.createElement('div');
         section.className = 'worksheet-container';
 
+        const innerContent = document.createElement('div');
+        innerContent.className = 'worksheet-inner-content';
+
         const header = document.createElement('div');
         header.className = 'worksheet-header';
         header.innerHTML = `<div class="worksheet-title">Answer Key</div>`;
-        section.appendChild(header);
+        innerContent.appendChild(header);
 
         const isHorizontal = data.config.layout === 'horizontal';
 
@@ -265,7 +273,8 @@ class WorksheetRenderer {
             grid.appendChild(el);
         });
 
-        section.appendChild(grid);
+        innerContent.appendChild(grid);
+        section.appendChild(innerContent);
         this.container.appendChild(section);
     }
 }

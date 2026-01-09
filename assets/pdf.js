@@ -28,22 +28,22 @@ class PDFGenerator {
             doc.setFontSize(22);
 
             const title = isAnswerKey ? `${data.config.type} ANSWER KEY` : `${data.config.type} Practice`;
-            doc.text(title.toUpperCase(), margin, margin + 10);
+            doc.text(title.toUpperCase(), margin + 10, margin + 15);
 
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
+            doc.setFontSize(14);
 
             if (!isAnswerKey) {
-                doc.text("Date: _________________", pageWidth - margin - 60, margin + 5);
-                doc.text(`Score: _______ / ${data.questions.length}`, pageWidth - margin - 60, margin + 12);
+                doc.text("Date: ____________________", pageWidth - margin - 10, margin + 12, { align: 'right' });
+                doc.text(`Score: _________ / ${data.questions.length}`, pageWidth - margin - 10, margin + 20, { align: 'right' });
             }
 
-            doc.line(margin, margin + 15, pageWidth - margin, margin + 15);
+            doc.setLineWidth(1.5);
+            doc.line(margin + 10, margin + 25, pageWidth - margin - 10, margin + 25);
 
-            // --- Page Border ---
-            // Draw border for the *first* page of this set immediately
-            doc.setLineWidth(1);
-            doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+            // --- Page Border (Thick Frame) ---
+            doc.setLineWidth(1.5); // Thick border
+            doc.rect(margin, margin, pageWidth - (margin * 2), pageHeight - (margin * 2));
 
             // --- Questions ---
             let yPos = margin + 35;
@@ -85,10 +85,10 @@ class PDFGenerator {
                 // Page Break Check
                 if (i > 0 && colIndex === 0) {
                     currentPageY += rowHeight;
-                    if (currentPageY + rowHeight > (pageHeight - margin - 10)) {
+                    if (currentPageY + rowHeight > (pageHeight - margin - 15)) {
                         doc.addPage();
-                        doc.setLineWidth(1);
-                        doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+                        doc.setLineWidth(1.5);
+                        doc.rect(margin, margin, pageWidth - (margin * 2), pageHeight - (margin * 2));
                         currentPageY = margin + 20;
                     }
                 }
