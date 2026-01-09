@@ -123,12 +123,7 @@
 
                 <!-- 2. Right: Action & Preview Area -->
                 <section class="preview-area">
-                    <div class="action-bar-floating" id="global-actions" style="margin-bottom: 1rem;">
-                        <button class="btn-action shuffle" onclick="generate()" title="Shuffle Problems">🎲
-                            Shuffle</button>
-                        <button class="btn-action primary" onclick="downloadPDF()"><span>📥</span> Download PDF</button>
-                        <button class="btn-action secondary" onclick="window.print()"><span>🖨️</span> Print</button>
-                    </div>
+                    <h2 class="preview-header-title">Preview Worksheet</h2>
 
                     <div class="preview-tabs" id="preview-tabs">
                         <button class="preview-tab active" onclick="switchPage(0)">Worksheet</button>
@@ -142,6 +137,15 @@
                                 <p>Configuring your worksheet...</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="preview-actions-footer" id="global-actions">
+                        <button class="btn-premium scramble" onclick="generate()" title="Shuffle Problems">
+                            <span class="op-icon" style="font-size: 1rem; margin:0;">🔄</span> Scramble
+                        </button>
+                        <button class="btn-premium primary" onclick="downloadPDF()">Download Worksheet</button>
+                        <button class="btn-premium secondary" onclick="downloadAnswerKeyDirect()">Download Answer
+                            Key</button>
                     </div>
                 </section>
             </div>
@@ -354,6 +358,11 @@
                 const gen = new window.PDFGenerator();
                 gen.generate(window.lastData);
             }
+        }
+
+        function downloadAnswerKeyDirect() {
+            // For now, these both use the same generator as it includes both pages
+            downloadPDF();
         }
 
         function switchPage(index) {
