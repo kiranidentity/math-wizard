@@ -141,16 +141,6 @@
             </section>
 
             <section id="preview-section" class="info-section hidden no-print">
-                <div class="preview-header">
-                    <h2 class="section-title">Worksheet Preview</h2>
-                    <div class="preview-actions">
-                        <button class="btn-action shuffle" onclick="generate()" title="Shuffle Problems">🎲
-                            Shuffle</button>
-                        <button class="btn-action download" onclick="downloadPDF()">📥 Download PDF</button>
-                        <button class="btn-action print" onclick="window.print()">🖨️ Print</button>
-                    </div>
-                </div>
-
                 <div id="worksheet-preview">
                     <!-- Live content here -->
                 </div>
@@ -329,6 +319,7 @@
                 currentConfig.max1 = r.max;
                 currentConfig.min2 = r.min;
                 currentConfig.max2 = r.max;
+                currentConfig.digits = d;
 
                 const engine = new WorksheetGenerator();
                 const data = engine.generate(currentConfig);

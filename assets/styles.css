@@ -377,14 +377,42 @@ input:checked+.slider:before {
 }
 
 #worksheet-preview {
+    background: #edf2f7;
+    /* Background page to make the paper pop */
+    padding: 3rem 1rem;
+    min-height: 400px;
+    margin: 2rem auto;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.worksheet-container {
     background: white;
     padding: 4rem 3rem;
-    min-height: 1122px;
-    /* A4 aspect ratio at screen res */
-    max-width: 210mm;
-    margin: 0 auto;
-    box-shadow: var(--shadow-lg);
+    width: 210mm;
+    min-height: 297mm;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+/* Response Scaling for Preview */
+@media (max-width: 900px) {
+    .worksheet-container {
+        transform-origin: top center;
+        transform: scale(0.8);
+        margin-bottom: -60mm;
+    }
+}
+
+@media (max-width: 600px) {
+    .worksheet-container {
+        transform: scale(0.5);
+        margin-bottom: -150mm;
+    }
 }
 
 /* Rendered Worksheet Styles */
@@ -485,24 +513,43 @@ input:checked+.slider:before {
     .config-panel,
     footer,
     .ad-slot,
-    .preview-header {
+    .preview-header,
+    .info-section,
+    .preview-actions {
         display: none !important;
     }
 
     body {
         background: white;
+        margin: 0;
+        padding: 0;
     }
 
     .container {
         max-width: none;
-        padding: 0;
+        width: 100%;
         margin: 0;
+        padding: 0;
     }
 
     #worksheet-preview {
+        background: none;
+        padding: 0;
+        margin: 0;
+        display: block !important;
+    }
+
+    .worksheet-container {
         box-shadow: none;
         border: none;
         padding: 0;
         margin: 0;
+        width: 100%;
+        page-break-after: always;
+    }
+
+    .answer-key-section {
+        display: none;
+        /* Already handled by page-break or PDF logic */
     }
 }

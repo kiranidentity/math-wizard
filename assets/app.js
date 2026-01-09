@@ -5,39 +5,52 @@ class WorksheetGenerator {
         const { type, count, min1, max1, min2, max2, terms } = config;
         const questions = [];
 
+        // Logic check: Multi-term is only for Addition. Others use 2 terms.
+        const isAddition = type === 'addition';
+
         for (let i = 0; i < count; i++) {
-            const problemTerms = [];
-            const numTerms = (type === 'addition' || (type === 'mixed' && Math.random() > 0.5)) ? (terms || 2) : 2;
+            let q = {};
 
-            for (let j = 0; j < numTerms; j++) {
-                const min = j === 0 ? min1 : min2;
-                const max = j === 0 ? max1 : max2;
-                problemTerms.push(Math.floor(Math.random() * (max - min + 1)) + min);
-            }
-
-            let op = type;
+            // Determine active operation for this problem (randomly if Mixed)
+            let activeOp = type;
             if (type === 'mixed') {
                 const ops = ['addition', 'subtraction', 'multiplication'];
-                op = ops[Math.floor(Math.random() * ops.length)];
+                activeOp = ops[Math.floor(Math.random() * ops.length)];
             }
 
-            // For subtraction, ensure result is non-negative
-            if (op === 'subtraction' && problemTerms.length === 2) {
-                problemTerms.sort((a, b) => b - a);
+            // Generate Numbers
+            if (activeOp === 'addition') {
+                const numTerms = terms || 2;
+                q.nums = [];
+                for (let j = 0; j < numTerms; j++) {
+                    const min = j === 0 ? min1 : min2;
+                    const max = j === 0 ? max1 : max2;
+                    q.nums.push(Math.floor(Math.random() * (max - min + 1)) + min);
+                }
+                q.answer = q.nums.reduce((a, b) => a + b, 0);
+                q.displayOperator = '+';
+            } else {
+                // 2 Terms for others
+                let n1 = Math.floor(Math.random() * (max1 - min1 + 1)) + min1;
+                let n2 = Math.floor(Math.random() * (max2 - min2 + 1)) + min2;
+
+                if (activeOp === 'subtraction') {
+                    if (n2 > n1) [n1, n2] = [n2, n1]; // Avoid negative results
+                    q.answer = n1 - n2;
+                    q.displayOperator = '−';
+                } else {
+                    q.answer = n1 * n2;
+                    q.displayOperator = '×';
+                }
+                q.num1 = n1;
+                q.num2 = n2;
             }
 
-            const answer = this._calculateAnswer(op, problemTerms);
-            questions.push({ terms: problemTerms, op, answer });
+            q.op = activeOp;
+            questions.push(q);
         }
 
         return { questions, config };
-    }
-
-    _calculateAnswer(op, terms) {
-        if (op === 'addition' || op === 'mixed_addition') return terms.reduce((a, b) => a + b, 0);
-        if (op === 'subtraction') return terms[0] - terms[1];
-        if (op === 'multiplication') return terms.reduce((a, b) => a * b, 1);
-        return 0;
     }
 }
 
@@ -50,50 +63,85 @@ class WorksheetRenderer {
         this.container.innerHTML = '';
         this.container.style.display = 'block';
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'worksheet-container';
+        // Add Action Bar at top
+        this._renderActionBar(data);
+
+        const wsPage = document.createElement('div');
+        wsPage.className = 'worksheet-container';
 
         // Header
         const header = document.createElement('div');
         header.className = 'worksheet-header';
 
-        const titleText = data.config.type.charAt(0).toUpperCase() + data.config.type.slice(1) + " Worksheet";
+        // Dynamic title based on config
+        const opDisplay = data.config.type.charAt(0).toUpperCase() + data.config.type.slice(1);
         header.innerHTML = `
-            <div class="worksheet-title">${titleText}</div>
+            <div class="worksheet-title">${opDisplay} Practice</div>
             <div class="worksheet-meta">
                 Name: ____________________ Date: _________
             </div>
         `;
-        wrapper.appendChild(header);
+        wsPage.appendChild(header);
 
-        // Grid
+        const isHorizontal = data.config.layout === 'horizontal';
+
+        // Decide column count
+        let numCols = 2;
+        if (isHorizontal) {
+            // Check if 3 columns fit (simple heuristic based on digits)
+            const d = data.config.digits || 1;
+            const t = data.config.terms || 2;
+            if (d <= 2 && t <= 2) numCols = 3;
+        }
+
         const grid = document.createElement('div');
-        const numCols = data.config.layout === 'horizontal' ? 3 : 2;
-        grid.className = `worksheet-grid ${data.config.layout}-layout`;
+        grid.className = 'worksheet-grid';
         grid.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
+        if (isHorizontal) grid.classList.add('horizontal-layout');
 
         data.questions.forEach((q, index) => {
             const el = document.createElement('div');
-            el.className = `problem ${data.config.layout}`;
+            el.className = `problem ${isHorizontal ? 'horizontal' : ''}`;
 
             let problemHTML = `<div class="problem-number">${index + 1})</div>`;
 
-            if (data.config.layout === 'horizontal') {
-                const sym = q.op === 'subtraction' ? '-' : (q.op === 'multiplication' ? '×' : '+');
-                problemHTML += `<div class="problem-horizontal">
-                    <span class="equation">${q.terms.join(` ${sym} `)} = </span>
-                    <span class="answer-space">_______</span>
-                </div>`;
+            if (isHorizontal) {
+                let equation = "";
+                if (q.nums) {
+                    equation = q.nums.join(` ${q.displayOperator} `);
+                } else {
+                    equation = `${q.num1} ${q.displayOperator} ${q.num2}`;
+                }
+
+                problemHTML += `
+                    <div class="problem-horizontal">
+                        <span class="equation">${equation} = </span>
+                        <span class="answer-space">___________</span>
+                    </div>
+                `;
             } else {
+                // Vertical Layout
                 problemHTML += `<div class="problem-inner">`;
-                for (let i = 0; i < q.terms.length; i++) {
-                    const isLast = i === q.terms.length - 1;
-                    const sym = q.op === 'subtraction' ? '-' : (q.op === 'multiplication' ? '×' : '+');
+                if (q.nums && q.nums.length > 2) {
+                    q.nums.forEach((num, i) => {
+                        const isLast = i === q.nums.length - 1;
+                        problemHTML += `
+                            <div class="problem-row">
+                                ${isLast ? `<span class="operator">${q.displayOperator}</span>` : ''}
+                                <span>${num}</span>
+                            </div>
+                        `;
+                    });
+                } else {
                     problemHTML += `
                         <div class="problem-row">
-                            ${isLast ? `<span class="operator">${sym}</span>` : ''}
-                            <span class="number">${q.terms[i]}</span>
-                        </div>`;
+                            <span>${q.num1 || (q.nums ? q.nums[0] : 0)}</span>
+                        </div>
+                        <div class="problem-row">
+                            <span class="operator">${q.displayOperator}</span>
+                            <span>${q.num2 || (q.nums ? q.nums[1] : 0)}</span>
+                        </div>
+                    `;
                 }
                 problemHTML += `<div class="line"></div></div>`;
             }
@@ -102,13 +150,45 @@ class WorksheetRenderer {
             grid.appendChild(el);
         });
 
-        wrapper.appendChild(grid);
-        this.container.appendChild(wrapper);
+        wsPage.appendChild(grid);
+        this.container.appendChild(wsPage);
 
-        // Answer Key
+        // Render Answer Key (Sequential in the same container for v32 flow)
         if (data.config.includeAnswers) {
             this._renderAnswerKey(data, numCols);
         }
+    }
+
+    _renderActionBar(data) {
+        const bar = document.createElement('div');
+        bar.className = 'preview-actions no-print';
+        bar.style.justifyContent = 'center';
+        bar.style.marginBottom = '2rem';
+
+        const dlBtn = document.createElement('button');
+        dlBtn.className = 'btn-action download';
+        dlBtn.innerHTML = '<span>📥</span> Download PDF';
+        dlBtn.onclick = () => {
+            if (window.PDFGenerator) {
+                const gen = new window.PDFGenerator();
+                gen.generate(data);
+            }
+        };
+
+        const printBtn = document.createElement('button');
+        printBtn.className = 'btn-action print';
+        printBtn.innerHTML = '<span>🖨️</span> Print';
+        printBtn.onclick = () => window.print();
+
+        const shuffleBtn = document.createElement('button');
+        shuffleBtn.className = 'btn-action shuffle';
+        shuffleBtn.innerHTML = '<span>🎲</span> Shuffle';
+        shuffleBtn.onclick = () => generate(); // Assuming generate is global
+
+        bar.appendChild(shuffleBtn);
+        bar.appendChild(dlBtn);
+        bar.appendChild(printBtn);
+        this.container.appendChild(bar);
     }
 
     _renderAnswerKey(data, numCols) {
@@ -116,40 +196,87 @@ class WorksheetRenderer {
         divider.className = 'answer-key-section no-print';
         this.container.appendChild(divider);
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'worksheet-container answer-key';
+        const section = document.createElement('div');
+        section.className = 'worksheet-container';
 
         const header = document.createElement('div');
         header.className = 'worksheet-header';
         header.innerHTML = `<div class="worksheet-title">Answer Key</div>`;
-        wrapper.appendChild(header);
+        section.appendChild(header);
+
+        const isHorizontal = data.config.layout === 'horizontal';
 
         const grid = document.createElement('div');
-        grid.className = `worksheet-grid ${data.config.layout}-layout`;
+        grid.className = 'worksheet-grid';
+        if (isHorizontal) grid.classList.add('horizontal-layout');
         grid.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;
 
         data.questions.forEach((q, index) => {
             const el = document.createElement('div');
-            el.className = `problem ${data.config.layout}`;
+            el.className = `problem ${isHorizontal ? 'horizontal' : ''}`;
 
-            let html = `<div class="problem-number">${index + 1})</div>`;
-            if (data.config.layout === 'horizontal') {
-                const sym = q.op === 'subtraction' ? '-' : (q.op === 'multiplication' ? '×' : '+');
-                html += `<div class="problem-horizontal">
-                    <span class="equation">${q.terms.join(` ${sym} `)} = </span>
-                    <span class="answer-value">${q.answer}</span>
-                </div>`;
+            let problemHTML = `<div class="problem-number">${index + 1})</div>`;
+
+            if (isHorizontal) {
+                let equation = "";
+                if (q.nums) {
+                    equation = q.nums.join(` ${q.displayOperator} `);
+                } else {
+                    equation = `${q.num1} ${q.displayOperator} ${q.num2}`;
+                }
+
+                problemHTML += `
+                    <div class="problem-horizontal">
+                        <span class="equation">${equation} = </span>
+                        <span class="answer-value">${q.answer}</span>
+                    </div>
+                `;
             } else {
-                html += `<div class="problem-inner">
-                    <div class="answer-value" style="text-align:right; width:100%; border-bottom: 2px solid #000; padding-bottom: 5px;">${q.answer}</div>
-                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">Correct Answer</div>
-                </div>`;
+                problemHTML += `<div class="problem-inner">`;
+                if (q.nums && q.nums.length > 2) {
+                    q.nums.forEach((num, i) => {
+                        const isLast = i === q.nums.length - 1;
+                        problemHTML += `
+                            <div class="problem-row">
+                                ${isLast ? `<span class="operator">${q.displayOperator}</span>` : ''}
+                                <span>${num}</span>
+                            </div>
+                        `;
+                    });
+                } else {
+                    problemHTML += `
+                        <div class="problem-row">
+                            <span>${q.num1 || (q.nums ? q.nums[0] : 0)}</span>
+                        </div>
+                        <div class="problem-row">
+                            <span class="operator">${q.displayOperator}</span>
+                            <span>${q.num2 || (q.nums ? q.nums[1] : 0)}</span>
+                        </div>
+                    `;
+                }
+
+                problemHTML += `
+                        <div class="line"></div>
+                        <div class="answer-value">${q.answer}</div>
+                    </div>
+                `;
             }
-            el.innerHTML = html;
+            el.innerHTML = problemHTML;
             grid.appendChild(el);
         });
 
-        wrapper.appendChild(grid);
-        this.container.appendChild(wrapper);
+        section.appendChild(grid);
+        this.container.appendChild(section);
     }
+}
+
+window.WorksheetGenerator = WorksheetGenerator;
+window.WorksheetRenderer = WorksheetRenderer;
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(reg => console.log('SW ok'))
+            .catch(err => console.log('SW fail', err));
+    });
 }
