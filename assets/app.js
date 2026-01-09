@@ -165,11 +165,15 @@ class WorksheetRenderer {
         this.container.innerHTML = '';
         this.container.style.display = 'block';
 
+        // --- Page 1: Worksheet ---
+        const wsPage = document.createElement('div');
+        wsPage.className = 'worksheet-page active worksheet-preview-mini';
+
         // 1. Page Label
         const pageLabel = document.createElement('div');
-        pageLabel.className = 'page-label';
+        pageLabel.className = 'preview-label';
         pageLabel.innerText = 'Problem Sheet';
-        this.container.appendChild(pageLabel);
+        wsPage.appendChild(pageLabel);
 
         // 2. Header
         const header = document.createElement('div');
@@ -181,7 +185,7 @@ class WorksheetRenderer {
                 Score: _______ / ${data.questions.length}
             </div>
         `;
-        this.container.appendChild(header);
+        wsPage.appendChild(header);
 
         // 2. Questions Grid
         const isHorizontal = data.config.layout === 'horizontal';
@@ -266,18 +270,19 @@ class WorksheetRenderer {
             grid.appendChild(el);
         });
 
-        this.container.appendChild(grid);
+        wsPage.appendChild(grid);
+        this.container.appendChild(wsPage);
 
         // 3. Answer Key (if requested)
         if (data.config.includeAnswers) {
-            this._renderAnswerKey(data);
+            this._renderAnswerKey(data, numCols);
+            document.getElementById('answer-tab').style.display = 'block';
+        } else {
+            document.getElementById('answer-tab').style.display = 'none';
         }
 
-        // Scroll to preview
-        this.container.scrollIntoView({ behavior: 'smooth' });
-
-        // 4. Action Bar (PDF Download)
-        this._renderActionBar(data);
+        // Reset to first page UI
+        if (window.switchPage) window.switchPage(0);
     }
 
     _renderActionBar(data) {
@@ -327,14 +332,13 @@ class WorksheetRenderer {
         this.container.appendChild(bar);
     }
 
-    _renderAnswerKey(data) {
-        // Separator / Container for Answer Sheet
+    _renderAnswerKey(data, numCols) {
         const section = document.createElement('div');
-        section.className = 'answer-key-section';
+        section.className = 'worksheet-page worksheet-preview-mini';
 
         // Page Label
         const pageLabel = document.createElement('div');
-        pageLabel.className = 'page-label';
+        pageLabel.className = 'preview-label';
         pageLabel.innerText = 'Answer Key';
         section.appendChild(pageLabel);
 
@@ -347,18 +351,7 @@ class WorksheetRenderer {
         section.appendChild(header);
 
         const isHorizontal = data.config.layout === 'horizontal';
-        const terms = data.config.terms || 2;
-        const digits = data.config.digits || 1;
 
-        const getNumCols = () => {
-            if (!isHorizontal) return 2;
-            const estChars = (terms * digits) + ((terms - 1) * 3) + 15;
-            if (estChars > 28) return 1;
-            if (estChars > 18) return 2;
-            return 3;
-        };
-
-        const numCols = getNumCols();
         const grid = document.createElement('div');
         grid.className = 'worksheet-grid';
         grid.style.gridTemplateColumns = `repeat(${numCols}, 1fr)`;

@@ -38,122 +38,114 @@
         <main>
             <div class="ad-slot">Advertisement</div>
 
-            <!-- Configuration Panel -->
-            <section id="config-panel" class="config-panel">
+            <!-- App Dashboard Grid -->
+            <div class="app-dashboard-grid">
+                <!-- 1. Left: Configuration -->
+                <section id="config-sidebar" class="config-sidebar">
 
-                <h2 class="section-title">1. Choose Operation</h2>
-                <div class="operations-grid">
-                    <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
-                        <span class="op-icon">➕</span>
-                        <div class="op-name">Addition</div>
-                    </div>
-                    <div class="op-card" data-value="subtraction" onclick="selectOperation('subtraction')">
-                        <span class="op-icon">➖</span>
-                        <div class="op-name">Subtraction</div>
-                    </div>
-                    <div class="op-card" data-value="multiplication" onclick="selectOperation('multiplication')">
-                        <span class="op-icon">✖️</span>
-                        <div class="op-name">Multiplication</div>
-                    </div>
-                    <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
-                        <span class="op-icon">🎲</span>
-                        <div class="op-name">Mixed</div>
-                    </div>
-                </div>
-                <h2 class="section-title" style="margin-top: 2rem;">2. Choose Complexity</h2>
-                <div class="difficulty-section" style="margin-bottom: 2rem;">
-                    <div class="difficulty-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <div class="diff-card active" data-digits="1" onclick="selectDigits(1)">
-                            <span class="diff-label">1 Digit</span>
-                            <span class="diff-example">e.g. 5+3</span>
-                        </div>
-                        <div class="diff-card" data-digits="2" onclick="selectDigits(2)">
-                            <span class="diff-label">2 Digits</span>
-                            <span class="diff-example">e.g. 23+45</span>
-                        </div>
-                        <div class="diff-card" data-digits="3" onclick="selectDigits(3)">
-                            <span class="diff-label">3 Digits</span>
-                            <span class="diff-example">e.g. 123+456</span>
-                        </div>
-                        <div class="diff-card" data-digits="4" onclick="selectDigits(4)">
-                            <span class="diff-label">4 Digits</span>
-                            <span class="diff-example">e.g. 1234+5678</span>
-                        </div>
-                        <div class="diff-card" data-digits="5" onclick="selectDigits(5)">
-                            <span class="diff-label">5 Digits</span>
-                            <span class="diff-example">e.g. 12345</span>
-                        </div>
-                        <div class="diff-card" data-digits="6" onclick="selectDigits(6)">
-                            <span class="diff-label">6 Digits</span>
-                            <span class="diff-example">e.g. 123456</span>
-                        </div>
-                    </div>
-                </div>
-
-                <h2 class="section-title" style="margin-top: 2rem;">3. Choose Layout</h2>
-                <div class="difficulty-section" style="margin-bottom: 2rem;">
-                    <div class="difficulty-grid"
-                        style="grid-template-columns: repeat(2, 1fr); max-width: 400px; margin-left: auto; margin-right: auto;">
-                        <div class="diff-card active compact-card" data-layout="vertical"
-                            onclick="selectLayout('vertical')">
-                            <span class="diff-label">Vertical</span>
-                            <span class="diff-example">12<br>+34</span>
-                        </div>
-                        <div class="diff-card compact-card" data-layout="horizontal"
-                            onclick="selectLayout('horizontal')">
-                            <span class="diff-label">Horizontal</span>
-                            <span class="diff-example">12 + 34 = _</span>
-                        </div>
-                    </div>
-                </div>
-
-                <h2 class="section-title">4. Configure</h2>
-                <div class="settings-grid">
-                    <!-- Question Count -->
-                    <div class="setting-group">
-                        <label class="setting-label">Number of Questions</label>
-                        <div class="range-wrap">
-                            <input type="range" id="q-count" min="5" max="50" step="5" value="20"
-                                aria-label="Question Count: Select between 5 and 50 questions"
-                                oninput="updateRangeVal('q-count-val', this.value)">
-                            <span id="q-count-val" class="range-value" aria-hidden="true">20</span>
+                    <div class="config-section">
+                        <h2 class="section-title"><span>⚙️</span> 1. Operation</h2>
+                        <div class="operations-grid">
+                            <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
+                                <span class="op-icon">➕</span>
+                                <div class="op-name">Addition</div>
+                            </div>
+                            <div class="op-card" data-value="subtraction" onclick="selectOperation('subtraction')">
+                                <span class="op-icon">➖</span>
+                                <div class="op-name">Subtraction</div>
+                            </div>
+                            <div class="op-card" data-value="multiplication"
+                                onclick="selectOperation('multiplication')">
+                                <span class="op-icon">✖️</span>
+                                <div class="op-name">Multiplication</div>
+                            </div>
+                            <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
+                                <span class="op-icon">🎲</span>
+                                <div class="op-name">Mixed</div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Numbers Per Question (Terms) -->
-                    <div class="setting-group" id="terms-setting">
-                        <label class="setting-label">Numbers per Question</label>
-                        <div class="range-wrap">
-                            <input type="range" id="q-terms" min="2" max="6" step="1" value="2"
-                                aria-label="Numbers per Question: Choose between 2 and 6 numbers per equation"
-                                oninput="updateTermsVal(this.value)">
-                            <span id="q-terms-val" class="range-value" aria-hidden="true">2</span>
-                        </div>
-                        <div id="terms-example-preview"
-                            style="font-size: 0.8rem; font-style: italic; color: var(--text-muted); margin-top: 0.25rem;">
-                            Example: 12 + 34
+                    <div class="config-section">
+                        <div class="setting-row">
+                            <h2 class="section-title"><span>🔢</span> Digits</h2>
+                            <div class="stepper">
+                                <button onclick="step('digits', -1)">-</button>
+                                <span id="digits-val">1</span>
+                                <button onclick="step('digits', 1)">+</button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Advanced Options -->
-                    <div class="setting-group">
-                        <label class="setting-label">Include Answer Key</label>
-                        <label class="switch" title="Toggle to include answer key on a separate page">
-                            <input type="checkbox" id="include-answers" checked aria-label="Include Answer Key">
-                            <span class="slider"></span>
-                        </label>
+                    <div class="config-section">
+                        <div class="setting-row">
+                            <h2 class="section-title"><span>📏</span> Orientation</h2>
+                            <select id="layout-select" class="modern-select" onchange="selectLayout(this.value)">
+                                <option value="vertical">Vertical Stack</option>
+                                <option value="horizontal">Horizontal Line</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <button class="btn-primary" onclick="generate()" style="margin-top: 2rem;"
-                    aria-label="Generate and preview your math worksheet">Create Worksheet</button>
-            </section>
+                    <div class="config-section">
+                        <div class="setting-row">
+                            <h2 class="section-title"><span>📋</span> Problems</h2>
+                            <div class="stepper">
+                                <button onclick="step('count', -5)">-</button>
+                                <span id="q-count-val">20</span>
+                                <button onclick="step('count', 5)">+</button>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Worksheet Preview (Phase 3) -->
-            <section id="worksheet-preview" class="hidden" aria-live="polite">
-                <!-- Generated content will go here -->
-                <div id="worksheet-content"></div>
-            </section>
+                    <div class="config-section" id="terms-setting">
+                        <div class="setting-row">
+                            <h2 class="section-title"><span>➕</span> Terms</h2>
+                            <div class="stepper">
+                                <button onclick="step('terms', -1)">-</button>
+                                <span id="q-terms-val">2</span>
+                                <button onclick="step('terms', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <div class="setting-group-row">
+                            <label class="section-title" style="margin:0; font-size:1rem;"><span>🔑</span>
+                                Answers</label>
+                            <label class="switch">
+                                <input type="checkbox" id="include-answers" checked onchange="generate()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Right: Action & Preview Area -->
+                <section class="preview-area">
+                    <div class="action-bar-floating" id="global-actions" style="margin-bottom: 1rem;">
+                        <button class="btn-action shuffle" onclick="generate()" title="Shuffle Problems">🎲
+                            Shuffle</button>
+                        <button class="btn-action primary" onclick="downloadPDF()"><span>📥</span> Download PDF</button>
+                        <button class="btn-action secondary" onclick="window.print()"><span>🖨️</span> Print</button>
+                    </div>
+
+                    <div class="preview-tabs" id="preview-tabs">
+                        <button class="preview-tab active" onclick="switchPage(0)">Worksheet</button>
+                        <button class="preview-tab" id="answer-tab" onclick="switchPage(1)">Answer Key</button>
+                    </div>
+
+                    <div class="preview-miniature-container">
+                        <div id="worksheet-preview" class="worksheet-preview-mini">
+                            <!-- Live content here -->
+                            <div class="empty-state-preview">
+                                <p>Configuring your worksheet...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
 
             <!-- SEO Content & Instructions for Parents -->
             <section class="info-section">
@@ -225,6 +217,7 @@
 
         // State
         let currentConfig = {
+            title: 'Addition Practice',
             type: 'addition',
             count: 20,
             digits: 1,
@@ -249,7 +242,7 @@
 
             // Update Card Examples
             updateCardExamples(op);
-            updateExamplePreview();
+            generate();
         }
 
         function updateCardExamples(op) {
@@ -271,35 +264,25 @@
             });
         }
 
-        function selectDigits(val) {
-            // Ensure val is a number
-            const num = parseInt(val);
-            currentConfig.digits = num;
-
-            // UI feedback
-            document.querySelectorAll('[data-digits]').forEach(el => el.classList.remove('active'));
-            const card = document.querySelector(`[data-digits="${num}"]`);
-            if (card) card.classList.add('active');
-
-            // Sync the terms example with new digits
-            updateTermsVal(document.getElementById('q-terms').value);
-        }
-
-        function updateExamplePreview() {
-            // Logic handled by updateTermsVal and Card styling
-        }
-
-        function generateDummyNumber(digits) {
-            if (digits === 1) return 7;
-            if (digits === 2) return 54;
-            if (digits === 3) return 321;
-            return 9;
+        function step(type, delta) {
+            if (type === 'digits') {
+                currentConfig.digits = Math.max(1, Math.min(6, currentConfig.digits + delta));
+                document.getElementById('digits-val').innerText = currentConfig.digits;
+                updateTermsVal(currentConfig.terms || 2);
+            } else if (type === 'count') {
+                currentConfig.count = Math.max(5, Math.min(60, currentConfig.count + delta));
+                document.getElementById('q-count-val').innerText = currentConfig.count;
+            } else if (type === 'terms') {
+                currentConfig.terms = Math.max(2, Math.min(6, (currentConfig.terms || 2) + delta));
+                document.getElementById('q-terms-val').innerText = currentConfig.terms;
+                updateTermsVal(currentConfig.terms);
+            }
+            generate();
         }
 
         function selectLayout(layout) {
             currentConfig.layout = layout;
-            document.querySelectorAll('[data-layout]').forEach(el => el.classList.remove('active'));
-            document.querySelector(`[data-layout="${layout}"]`).classList.add('active');
+            generate();
         }
 
         function updateRangeVal(id, val) {
@@ -334,48 +317,63 @@
         }
 
         async function generate() {
-            const btn = document.querySelector('.btn-primary');
-            btn.classList.add('generating');
-            btn.innerText = "Creating...";
+            // Gather config
+            currentConfig.count = currentConfig.count || 20;
+            currentConfig.includeAnswers = document.getElementById('include-answers').checked;
+            currentConfig.terms = currentConfig.terms || 2;
 
-            // Small delay to show "Generating" state for UX
-            await new Promise(r => setTimeout(r, 400));
+            const getRange = (d) => {
+                if (d === 1) return { min: 1, max: 9 };
+                const min = Math.pow(10, d - 1);
+                const max = Math.pow(10, d) - 1;
+                return { min, max };
+            };
 
-            try {
-                // Gather config
-                currentConfig.count = parseInt(document.getElementById('q-count').value);
-                currentConfig.includeAnswers = document.getElementById('include-answers').checked;
-                currentConfig.terms = parseInt(document.getElementById('q-terms').value) || 2;
+            const d = parseInt(currentConfig.digits) || 1;
+            const r = getRange(d);
 
-                const getRange = (d) => {
-                    if (d === 1) return { min: 1, max: 9 };
-                    const min = Math.pow(10, d - 1);
-                    const max = Math.pow(10, d) - 1;
-                    return { min, max };
-                };
+            currentConfig.min1 = r.min;
+            currentConfig.max1 = r.max;
+            currentConfig.min2 = r.min;
+            currentConfig.max2 = r.max;
 
-                const d = parseInt(currentConfig.digits) || 1;
-                const r = getRange(d);
+            // Call Engine
+            const engine = new WorksheetGenerator();
+            const data = engine.generate(currentConfig);
 
-                currentConfig.min1 = r.min;
-                currentConfig.max1 = r.max;
-                currentConfig.min2 = r.min;
-                currentConfig.max2 = r.max;
+            // Render
+            const renderer = new WorksheetRenderer('worksheet-preview');
+            renderer.render(data);
 
-                // Call Engine
-                const engine = new WorksheetGenerator();
-                const data = engine.generate(currentConfig);
+            // Save data for PDF
+            window.lastData = data;
+        }
 
-                // Render
-                const renderer = new WorksheetRenderer('worksheet-preview');
-                renderer.render(data);
-            } catch (e) {
-                console.error(e);
-            } finally {
-                btn.classList.remove('generating');
-                btn.innerText = "Create Worksheet";
+        function downloadPDF() {
+            if (window.lastData && window.PDFGenerator) {
+                const gen = new window.PDFGenerator();
+                gen.generate(window.lastData);
             }
         }
+
+        function switchPage(index) {
+            const container = document.getElementById('worksheet-preview');
+            const pages = container.querySelectorAll('.worksheet-page');
+            const tabs = document.querySelectorAll('.preview-tab');
+
+            pages.forEach((p, i) => {
+                p.classList.toggle('active', i === index);
+            });
+
+            tabs.forEach((t, i) => {
+                t.classList.toggle('active', i === index);
+            });
+        }
+
+        // Initial Load
+        window.onload = () => {
+            selectOperation('addition'); // Triggers first generate
+        };
     </script>
 </body>
 
