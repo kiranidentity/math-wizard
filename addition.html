@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Generate free printable addition worksheets for kindergarten, 1st grade, and 2nd grade. Customize number ranges and question counts. Instant PDF download.">
+    <title>Free Addition Worksheets Generator | Math Wizard</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        .seo-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        .seo-content h2 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1 class="brand-title">Addition Worksheets</h1>
+            <p class="brand-subtitle">Create custom printable addition practice sheets in seconds.</p>
+        </header>
+
+        <main>
+            <div class="ad-slot">Advertisement</div>
+
+            <!-- SEO Intro -->
+            <section class="seo-content" style="margin-bottom: 2rem; text-align: center;">
+                <p>Welcome to the ultimate <strong>free addition worksheet generator</strong>. Whether you are a parent
+                    helping your child with math homework or a teacher creating resources for the classroom, our tool
+                    makes it easy to generate unlimited unique addition problems. No login required!</p>
+            </section>
+
+            <!-- Configuration Panel -->
+            <section id="config-panel" class="config-panel">
+
+                <h2 class="section-title">1. Choose Operation</h2>
+                <div class="operations-grid">
+                    <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
+                        <span class="op-icon">➕</span>
+                        <div class="op-name">Addition</div>
+                    </div>
+                    <!-- Other links act as navigation to other pages or just switch mode? 
+                         "One shared UI loaded by all pages". 
+                         If I am on addition.html, clicking "Subtraction" could either:
+                         a) Switch the generator to subtraction mode (staying on addition.html)
+                         b) Navigate to subtraction.html
+                         SEO strategy implies distinct pages. 
+                         If the user clicks "Subtraction", they might expect the UI to just update. 
+                         However, for SEO, we want them on subtraction.html. 
+                         But for "App-like" feel, updating in place is better. 
+                         Let's keep updating in place for the tool, but the *links* to reach this page are separate. 
+                         Actually, to support "Pass default operation via config", we just init with Addition.
+                         If they switch, let them switch. It doesn't hurt.
+                    -->
+                    <div class="op-card" data-value="subtraction" onclick="selectOperation('subtraction')">
+                        <span class="op-icon">➖</span>
+                        <div class="op-name">Subtraction</div>
+                    </div>
+                    <div class="op-card" data-value="multiplication" onclick="selectOperation('multiplication')">
+                        <span class="op-icon">✖️</span>
+                        <div class="op-name">Multiplication</div>
+                    </div>
+                    <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
+                        <span class="op-icon">🎲</span>
+                        <div class="op-name">Mixed</div>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <!-- Question Count -->
+                    <div class="setting-group">
+                        <label class="setting-label">Number of Questions</label>
+                        <div class="range-wrap">
+                            <input type="range" id="q-count" min="5" max="50" step="5" value="20"
+                                oninput="updateRangeVal('q-count-val', this.value)">
+                            <span id="q-count-val" class="range-value">20</span>
+                        </div>
+                    </div>
+
+                    <!-- Number Range (General) -->
+                    <div class="setting-group" id="range-setting">
+                        <label class="setting-label">Max Number</label>
+                        <div class="range-wrap">
+                            <input type="range" id="num-max" min="10" max="100" step="5" value="20"
+                                oninput="updateRangeVal('num-max-val', this.value)">
+                            <span id="num-max-val" class="range-value">20</span>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Options -->
+                    <div class="setting-group">
+                        <label class="setting-label">Include Answer Key</label>
+                        <label class="switch">
+                            <input type="checkbox" id="include-answers" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="generate()" style="margin-top: 2rem;">Create Worksheet</button>
+            </section>
+
+            <!-- Worksheet Preview -->
+            <section id="worksheet-preview" class="hidden">
+                <div id="worksheet-content"></div>
+            </section>
+
+            <div class="ad-slot">Advertisement</div>
+
+            <!-- SEO Footer Content -->
+            <section class="seo-content">
+                <h2>Why Use Our Addition Worksheet Generator?</h2>
+                <p>Mastering addition is a fundamental skill in mathematics. Practice is key to becoming fluent in math
+                    facts. Our generator allows you to create practice sheets tailored to your child's skill level.
+                    Start with single-digit addition (Max Number 10) and progress to double-digit addition (Max Number
+                    100) as they improve.</p>
+
+                <h2>Benefits of Printable Math Worksheets</h2>
+                <ul>
+                    <li><strong>Offline Focus:</strong> Paper-based practice reduces screen time and distractions.</li>
+                    <li><strong>Motor Skills:</strong> Writing answers improves fine motor skills and handwriting.</li>
+                    <li><strong>Customized Learning:</strong> Adjust difficulty to match exactly what your student
+                        needs.</li>
+                </ul>
+            </section>
+
+        </main>
+
+        <footer>
+            <p style="text-align: center; color: var(--text-muted); margin-top: 3rem; font-size: 0.9rem;">
+                &copy;
+                <script>document.write(new Date().getFullYear())</script> Math Wizard
+            </p>
+        </footer>
+    </div>
+
+    <script src="assets/vendor/jspdf.umd.min.js"></script>
+    <script src="assets/pdf.js"></script>
+    <script src="assets/app.js"></script>
+    <script>
+        // UI Logic
+
+        let currentConfig = {
+            type: 'addition', // Default for this page
+            count: 20,
+            max: 20
+        };
+
+        // On Load - Ensure UI matches config
+        // (The HTML hardcoded "active" on addition, so we are good)
+
+        function selectOperation(op) {
+            // Update UI
+            document.querySelectorAll('.op-card').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.op-card[data-value="${op}"]`).classList.add('active');
+
+            // Update State
+            currentConfig.type = op;
+
+            if (op === 'multiplication') {
+                document.getElementById('num-max').value = 12;
+                document.getElementById('num-max-val').innerText = 12;
+            }
+        }
+
+        function updateRangeVal(id, val) {
+            document.getElementById(id).innerText = val;
+        }
+
+        function generate() {
+            currentConfig.count = parseInt(document.getElementById('q-count').value);
+            currentConfig.max = parseInt(document.getElementById('num-max').value);
+            currentConfig.includeAnswers = document.getElementById('include-answers').checked;
+
+            const engine = new WorksheetGenerator();
+            const data = engine.generate(currentConfig);
+
+            const renderer = new WorksheetRenderer('worksheet-preview');
+            renderer.render(data);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Daily math challenge. A new unique worksheet every day. Build a habit with our daily progressive difficulty math practice.">
+    <title>Daily Math Challenge | Math Wizard</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        .daily-badge {
+            background: #F59E0B;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <div class="daily-badge" id="date-badge">Today's Challenge</div>
+            <h1 class="brand-title">Daily Worksheet</h1>
+            <p class="brand-subtitle">A new unique set of problems every day.</p>
+        </header>
+
+        <main>
+            <div class="ad-slot">Advertisement</div>
+
+            <!-- Auto-generated content, no config needed initially, but maybe allowed? 
+                 "Daily page auto-loads today’s worksheet" 
+                 "Progressive difficulty" -> implies logic based on date or just random diff?
+                 "Date-based random seed"
+            -->
+
+            <section id="worksheet-preview">
+                <div id="loading" style="text-align:center; padding: 2rem;">Generating Daily Challenge...</div>
+            </section>
+
+            <div class="ad-slot">Advertisement</div>
+
+            <section class="seo-content" style="text-align: center;">
+                <h2>Build a Daily Habit</h2>
+                <p>Come back every day for a fresh set of problems. The "Daily Challenge" uses today's date to generate
+                    a unique worksheet that is the same for everyone, allowing you to compare everyday!</p>
+            </section>
+
+        </main>
+
+        <footer>
+            <p style="text-align: center; color: var(--text-muted); margin-top: 3rem; font-size: 0.9rem;">
+                &copy;
+                <script>document.write(new Date().getFullYear())</script> Math Wizard
+            </p>
+        </footer>
+    </div>
+
+    <script src="assets/vendor/jspdf.umd.min.js"></script>
+    <script src="assets/pdf.js"></script>
+    <script src="assets/app.js"></script>
+    <script>
+        // Daily Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const date = new Date();
+            const dateStr = date.toDateString();
+            document.getElementById('date-badge').innerText = dateStr;
+
+            // Generate Seed from Date: YYYYMMDD
+            const seed = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+
+            // Progressive Difficulty? 
+            // Maybe base it on day of week? Or just random mix.
+            // Let's do a Mixed set with 30 questions.
+
+            const config = {
+                type: 'mixed',
+                count: 30,
+                max: 20, // Keep it moderate
+                includeAnswers: true
+            };
+
+            const engine = new WorksheetGenerator(seed);
+            const data = engine.generate(config);
+
+            // Wait a sec for effect
+            setTimeout(() => {
+                const renderer = new WorksheetRenderer('worksheet-preview');
+                renderer.render(data);
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>
