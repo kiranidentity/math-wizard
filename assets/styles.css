@@ -108,8 +108,8 @@ header {
 @media (min-width: 1024px) {
     .app-dashboard-grid {
         display: grid;
-        grid-template-columns: 1fr 340px;
-        /* Swapped: Config is wide, Preview is sidebar */
+        grid-template-columns: 1fr 1fr;
+        /* Balanced 50/50 split */
         align-items: flex-start;
         gap: 2rem;
     }
@@ -367,9 +367,9 @@ header {
     width: 210mm;
     min-height: 297mm;
     padding: 3rem 4rem;
-    /* Scaled down to fit perfectly in the 340px sidebar */
-    transform: scale(0.42);
-    margin-bottom: -155mm;
+    /* Increased scale to fill the new 50% width space */
+    transform: scale(0.58);
+    margin-bottom: -125mm;
     border: 1px solid #cbd5e0;
     flex-shrink: 0;
     position: relative;
