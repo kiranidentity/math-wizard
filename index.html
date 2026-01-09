@@ -16,15 +16,8 @@
         content="Generate custom math worksheets for kids in seconds. Choose difficulty, operations, and layout. Perfect for parents and teachers.">
     <meta property="og:image" content="https://mathwizard.app/assets/og-image.jpg">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Math Wizard | Free Printable Math Worksheets for Kids">
-    <meta property="twitter:description"
-        content="Generate custom math worksheets for kids in seconds. Choose difficulty, operations, and layout.">
-
     <title>Math Wizard | Free Printable Math Worksheet Generator for Kids</title>
     <link rel="stylesheet" href="assets/styles.css">
-    <!-- Inline SVG definitions if needed, otherwise using unicode/emoji or simple logic in JS for icons -->
 </head>
 
 <body>
@@ -38,139 +31,149 @@
         <main>
             <div class="ad-slot">Advertisement</div>
 
-            <!-- App Dashboard Grid -->
-            <div class="app-dashboard-grid">
-                <!-- 1. Left: Configuration (Now the Main Area) -->
-                <section id="config-sidebar" class="config-sidebar">
+            <section class="config-panel">
+                <div class="config-section">
+                    <h2 class="section-title"><span>⚙️</span> 1. Choose Operation</h2>
+                    <div class="operations-grid">
+                        <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
+                            <span class="op-icon">➕</span>
+                            <div class="op-name">Addition</div>
+                            <div class="op-example">12 + 45</div>
+                        </div>
+                        <div class="op-card" data-value="subtraction" onclick="selectOperation('subtraction')">
+                            <span class="op-icon">➖</span>
+                            <div class="op-name">Subtraction</div>
+                            <div class="op-example">85 - 23</div>
+                        </div>
+                        <div class="op-card" data-value="multiplication" onclick="selectOperation('multiplication')">
+                            <span class="op-icon">✖️</span>
+                            <div class="op-name">Multiplication</div>
+                            <div class="op-example">12 × 5</div>
+                        </div>
+                        <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
+                            <span class="op-icon">🎲</span>
+                            <div class="op-name">Mixed</div>
+                            <div class="op-example">Mix practice</div>
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="config-section">
-                        <h2 class="section-title"><span>⚙️</span> 1. Operation</h2>
-                        <div class="operations-grid">
-                            <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
-                                <span class="op-icon">➕</span>
-                                <div class="op-name">Addition</div>
+                <div class="config-section">
+                    <h2 class="section-title"><span>🔢</span> 2. Difficulty (Digits)</h2>
+                    <div class="digits-grid">
+                        <div class="diff-card active" data-digits="1" onclick="selectDigits(1)">
+                            <div class="diff-title">1 Digit</div>
+                            <div class="diff-example">e.g. 5 + 3</div>
+                        </div>
+                        <div class="diff-card" data-digits="2" onclick="selectDigits(2)">
+                            <div class="diff-title">2 Digits</div>
+                            <div class="diff-example">e.g. 23 + 45</div>
+                        </div>
+                        <div class="diff-card" data-digits="3" onclick="selectDigits(3)">
+                            <div class="diff-title">3 Digits</div>
+                            <div class="diff-example">e.g. 123 + 456</div>
+                        </div>
+                        <div class="diff-card" data-digits="4" onclick="selectDigits(4)">
+                            <div class="diff-title">4 Digits</div>
+                            <div class="diff-example">e.g. 1234 + 5678</div>
+                        </div>
+                        <div class="diff-card" data-digits="5" onclick="selectDigits(5)">
+                            <div class="diff-title">5 Digits</div>
+                            <div class="diff-example">e.g. 11223 + 44556</div>
+                        </div>
+                        <div class="diff-card" data-digits="6" onclick="selectDigits(6)">
+                            <div class="diff-title">6 Digits</div>
+                            <div class="diff-example">e.g. 112233 + 445566</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h2 class="section-title"><span>📏</span> 3. Worksheet Layout</h2>
+                    <div class="layout-grid">
+                        <div class="layout-card active" data-layout="vertical" onclick="selectLayout('vertical')">
+                            <div class="layout-icon">
+                                <div class="icon-v"></div>
                             </div>
-                            <div class="op-card" data-value="subtraction" onclick="selectOperation('subtraction')">
-                                <span class="op-icon">➖</span>
-                                <div class="op-name">Subtraction</div>
+                            <div class="layout-name">Vertical Stack</div>
+                        </div>
+                        <div class="layout-card" data-layout="horizontal" onclick="selectLayout('horizontal')">
+                            <div class="layout-icon">
+                                <div class="icon-h"></div>
                             </div>
-                            <div class="op-card" data-value="multiplication"
-                                onclick="selectOperation('multiplication')">
-                                <span class="op-icon">✖️</span>
-                                <div class="op-name">Multiplication</div>
-                            </div>
-                            <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
-                                <span class="op-icon">🎲</span>
-                                <div class="op-name">Mixed</div>
-                            </div>
+                            <div class="layout-name">Horizontal Line</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="setting-group" id="q-count-setting">
+                        <label class="setting-label">Number of problems: <span id="q-count-val"
+                                class="range-value">20</span></label>
+                        <div class="range-wrap">
+                            <input type="range" id="q-count" min="5" max="60" step="5" value="20"
+                                oninput="updateRangeVal('q-count-val', this.value)">
                         </div>
                     </div>
 
-                    <div class="config-section">
-                        <div class="setting-row">
-                            <h2 class="section-title"><span>🔢</span> Digits</h2>
-                            <div class="stepper">
-                                <button onclick="step('digits', -1)">-</button>
-                                <span id="digits-val">1</span>
-                                <button onclick="step('digits', 1)">+</button>
-                            </div>
+                    <div id="terms-setting" class="setting-group">
+                        <label class="setting-label">Terms per problem: <span id="q-terms-val"
+                                class="range-value">2</span></label>
+                        <div class="range-wrap">
+                            <input type="range" id="q-terms" min="2" max="6" step="1" value="2"
+                                oninput="updateTermsVal(this.value)">
                         </div>
+                        <div id="terms-example-preview" class="example-preview">Example: 7 + 9</div>
                     </div>
 
-                    <div class="config-section">
-                        <div class="setting-row">
-                            <h2 class="section-title"><span>📏</span> Orientation</h2>
-                            <select id="layout-select" class="modern-select" onchange="selectLayout(this.value)">
-                                <option value="vertical">Vertical Stack</option>
-                                <option value="horizontal">Horizontal Line</option>
-                            </select>
-                        </div>
+                    <div class="setting-group">
+                        <label class="setting-label">Include Answer Key?</label>
+                        <label class="switch">
+                            <input type="checkbox" id="include-answers">
+                            <span class="slider"></span>
+                        </label>
                     </div>
+                </div>
 
-                    <div class="config-section">
-                        <div class="setting-row">
-                            <h2 class="section-title"><span>📋</span> Problems</h2>
-                            <div class="stepper">
-                                <button onclick="step('count', -5)">-</button>
-                                <span id="q-count-val">20</span>
-                                <button onclick="step('count', 5)">+</button>
-                            </div>
-                        </div>
+                <button class="btn-primary" onclick="generate()">
+                    Create Worksheet
+                </button>
+            </section>
+
+            <section id="preview-section" class="info-section hidden no-print">
+                <div class="preview-header">
+                    <h2 class="section-title">Worksheet Preview</h2>
+                    <div class="preview-actions">
+                        <button class="btn-action shuffle" onclick="generate()" title="Shuffle Problems">🎲
+                            Shuffle</button>
+                        <button class="btn-action download" onclick="downloadPDF()">📥 Download PDF</button>
+                        <button class="btn-action print" onclick="window.print()">🖨️ Print</button>
                     </div>
+                </div>
 
-                    <div class="config-section" id="terms-setting">
-                        <div class="setting-row">
-                            <h2 class="section-title"><span>➕</span> Terms</h2>
-                            <div class="stepper">
-                                <button onclick="step('terms', -1)">-</button>
-                                <span id="q-terms-val">2</span>
-                                <button onclick="step('terms', 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
+                <div id="worksheet-preview">
+                    <!-- Live content here -->
+                </div>
+            </section>
 
-                    <div class="config-section">
-                        <div class="setting-group-row">
-                            <label class="section-title" style="margin:0; font-size:1rem;"><span>🔑</span>
-                                Answers</label>
-                            <label class="switch">
-                                <input type="checkbox" id="include-answers" checked onchange="generate()">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 2. Right: Action & Preview Area -->
-                <section class="preview-area">
-                    <h2 class="preview-header-title">Preview Worksheet</h2>
-
-                    <div class="preview-tabs" id="preview-tabs">
-                        <button class="preview-tab active" onclick="switchPage(0)">Worksheet</button>
-                        <button class="preview-tab" id="answer-tab" onclick="switchPage(1)">Answer Key</button>
-                    </div>
-
-                    <div class="preview-miniature-container">
-                        <div id="worksheet-preview" class="worksheet-preview-mini">
-                            <!-- Live content here -->
-                            <div class="empty-state-preview">
-                                <p>Configuring your worksheet...</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="preview-actions-footer" id="global-actions">
-                        <button class="btn-premium scramble" onclick="generate()" title="Shuffle Problems">
-                            <span class="op-icon" style="font-size: 1rem; margin:0;">🔄</span> Scramble
-                        </button>
-                        <button class="btn-premium primary" onclick="downloadPDF()">Download Worksheet</button>
-                        <button class="btn-premium secondary" onclick="downloadAnswerKeyDirect()">Download Answer
-                            Key</button>
-                    </div>
-                </section>
-            </div>
-
-
-            <!-- SEO Content & Instructions for Parents -->
             <section class="info-section">
                 <div class="features-grid">
                     <div class="feature-card">
-                        <h3>🎨 Custom Layouts</h3>
-                        <p>Choose between <strong>Vertical (stacked)</strong> or <strong>Horizontal (inline)</strong>
-                            layouts based on your child's preference.</p>
+                        <h3>✨ High Quality PDFs</h3>
+                        <p>Generate clean, teacher-grade PDF worksheets perfectly formatted for standard A4 paper.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>📈 Progressive Difficulty</h3>
-                        <p>Generate problems from <strong>1 digit to 6 digits</strong>. Perfect for Kindergarten up to
-                            6th Grade.</p>
+                        <h3>🎚️ Custom Difficulty</h3>
+                        <p>From simple 1-digit addition to complex 6-digit multiplication. Grow with your child's
+                            skills.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>📄 PDF Export</h3>
-                        <p>Download your worksheet as a high-quality PDF ready for printing on standard A4 or Letter
-                            paper.</p>
+                        <h3>👶 Built for Kids</h3>
+                        <p>Large fonts, clear spacing, and simple layouts ensure kids focus on math, not the interface.
+                        </p>
                     </div>
                     <div class="feature-card">
-                        <h3>🔑 Answer Keys</h3>
+                        <h3>✅ Instant Answers</h3>
                         <p>Optionally include an <strong>Answer Key</strong> on the second page to make grading quick
                             and easy.</p>
                     </div>
@@ -205,7 +208,6 @@
         </main>
 
         <footer>
-            <!-- AdSense placement later -->
             <p style="text-align: center; color: var(--text-muted); margin-top: 3rem; font-size: 0.9rem;">
                 &copy;
                 <script>document.write(new Date().getFullYear())</script> Math Wizard
@@ -221,7 +223,6 @@
 
         // State
         let currentConfig = {
-            title: 'Addition Practice',
             type: 'addition',
             count: 20,
             digits: 1,
@@ -229,14 +230,10 @@
         };
 
         function selectOperation(op) {
-            // Update UI
             document.querySelectorAll('.op-card').forEach(el => el.classList.remove('active'));
             document.querySelector(`.op-card[data-value="${op}"]`).classList.add('active');
-
-            // Update State
             currentConfig.type = op;
 
-            // Show/Hide Terms selector (only for addition/mixed)
             const termsEl = document.getElementById('terms-setting');
             if (op === 'addition' || op === 'mixed') {
                 termsEl.style.display = 'block';
@@ -244,15 +241,11 @@
                 termsEl.style.display = 'none';
             }
 
-            // Update Card Examples
             updateCardExamples(op);
-            generate();
         }
 
         function updateCardExamples(op) {
             const examples = document.querySelectorAll('.diff-example');
-            // 0: 1 Digit, 1: 2 Digits, 2: 3 Digits, 3: 4 Digits, 4: 5 Digits, 5: 6 Digits
-
             const sym = op === 'subtraction' ? '-' : (op === 'multiplication' ? '×' : '+');
 
             examples.forEach((el, i) => {
@@ -268,25 +261,19 @@
             });
         }
 
-        function step(type, delta) {
-            if (type === 'digits') {
-                currentConfig.digits = Math.max(1, Math.min(6, currentConfig.digits + delta));
-                document.getElementById('digits-val').innerText = currentConfig.digits;
-                updateTermsVal(currentConfig.terms || 2);
-            } else if (type === 'count') {
-                currentConfig.count = Math.max(5, Math.min(60, currentConfig.count + delta));
-                document.getElementById('q-count-val').innerText = currentConfig.count;
-            } else if (type === 'terms') {
-                currentConfig.terms = Math.max(2, Math.min(6, (currentConfig.terms || 2) + delta));
-                document.getElementById('q-terms-val').innerText = currentConfig.terms;
-                updateTermsVal(currentConfig.terms);
-            }
-            generate();
+        function selectDigits(val) {
+            const num = parseInt(val);
+            currentConfig.digits = num;
+            document.querySelectorAll('[data-digits]').forEach(el => el.classList.remove('active'));
+            const card = document.querySelector(`[data-digits="${num}"]`);
+            if (card) card.classList.add('active');
+            updateTermsVal(document.getElementById('q-terms').value);
         }
 
         function selectLayout(layout) {
             currentConfig.layout = layout;
-            generate();
+            document.querySelectorAll('[data-layout]').forEach(el => el.classList.remove('active'));
+            document.querySelector(`[data-layout="${layout}"]`).classList.add('active');
         }
 
         function updateRangeVal(id, val) {
@@ -300,7 +287,6 @@
             const count = parseInt(val);
             const d = currentConfig.digits || 1;
 
-            // Generate a starting number based on digits
             const getBase = (digits) => {
                 if (digits === 1) return 5;
                 if (digits === 2) return 25;
@@ -313,7 +299,6 @@
             let base = getBase(d);
             let ex = base.toString();
             for (let i = 1; i < count; i++) {
-                // Increment slightly for variety
                 let nextNum = base + (i * Math.pow(10, d - 1) / 2);
                 ex += " + " + Math.floor(nextNum);
             }
@@ -321,36 +306,51 @@
         }
 
         async function generate() {
-            // Gather config
-            currentConfig.count = currentConfig.count || 20;
-            currentConfig.includeAnswers = document.getElementById('include-answers').checked;
-            currentConfig.terms = currentConfig.terms || 2;
+            const btn = document.querySelector('.btn-primary');
+            const originalText = btn.innerText;
+            btn.classList.add('generating');
+            btn.innerText = "Creating...";
 
-            const getRange = (d) => {
-                if (d === 1) return { min: 1, max: 9 };
-                const min = Math.pow(10, d - 1);
-                const max = Math.pow(10, d) - 1;
-                return { min, max };
-            };
+            try {
+                currentConfig.count = parseInt(document.getElementById('q-count').value);
+                currentConfig.includeAnswers = document.getElementById('include-answers').checked;
+                currentConfig.terms = parseInt(document.getElementById('q-terms').value) || 2;
 
-            const d = parseInt(currentConfig.digits) || 1;
-            const r = getRange(d);
+                const getRange = (d) => {
+                    if (d === 1) return { min: 1, max: 9 };
+                    const min = Math.pow(10, d - 1);
+                    const max = Math.pow(10, d) - 1;
+                    return { min, max };
+                };
 
-            currentConfig.min1 = r.min;
-            currentConfig.max1 = r.max;
-            currentConfig.min2 = r.min;
-            currentConfig.max2 = r.max;
+                const d = parseInt(currentConfig.digits) || 1;
+                const r = getRange(d);
+                currentConfig.min1 = r.min;
+                currentConfig.max1 = r.max;
+                currentConfig.min2 = r.min;
+                currentConfig.max2 = r.max;
 
-            // Call Engine
-            const engine = new WorksheetGenerator();
-            const data = engine.generate(currentConfig);
+                const engine = new WorksheetGenerator();
+                const data = engine.generate(currentConfig);
 
-            // Render
-            const renderer = new WorksheetRenderer('worksheet-preview');
-            renderer.render(data);
+                const previewSec = document.getElementById('preview-section');
+                previewSec.classList.remove('hidden');
 
-            // Save data for PDF
-            window.lastData = data;
+                const renderer = new WorksheetRenderer('worksheet-preview');
+                renderer.render(data);
+
+                window.lastData = data; // Save for PDF
+
+                // Smooth scroll to preview
+                document.getElementById('worksheet-preview').style.display = 'block';
+                document.getElementById('worksheet-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (e) {
+                console.error(e);
+            } finally {
+                btn.classList.remove('generating');
+                btn.innerText = originalText;
+            }
         }
 
         function downloadPDF() {
@@ -360,28 +360,10 @@
             }
         }
 
-        function downloadAnswerKeyDirect() {
-            // For now, these both use the same generator as it includes both pages
-            downloadPDF();
-        }
-
-        function switchPage(index) {
-            const container = document.getElementById('worksheet-preview');
-            const pages = container.querySelectorAll('.worksheet-page');
-            const tabs = document.querySelectorAll('.preview-tab');
-
-            pages.forEach((p, i) => {
-                p.classList.toggle('active', i === index);
-            });
-
-            tabs.forEach((t, i) => {
-                t.classList.toggle('active', i === index);
-            });
-        }
-
-        // Initial Load
         window.onload = () => {
-            selectOperation('addition'); // Triggers first generate
+            selectOperation('addition');
+            selectDigits(1);
+            selectLayout('vertical');
         };
     </script>
 </body>
