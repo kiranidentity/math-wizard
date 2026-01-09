@@ -40,8 +40,15 @@
 
             <!-- App Dashboard Grid -->
             <div class="app-dashboard-grid">
-                <!-- 1. Left: Configuration -->
+                <!-- 1. Left: Configuration (Now the Main Area) -->
                 <section id="config-sidebar" class="config-sidebar">
+                    <div class="config-main-header" style="margin-bottom: 2rem;">
+                        <h2 id="config-title" style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #1e293b;">Enter
+                            addition worksheet content</h2>
+                        <p id="config-subtitle" style="color: #64748b; font-size: 1rem;">Generate addition worksheets
+                            tailored to your needs! <a href="#" style="color: #4c6ef5; text-decoration: none;">See
+                                Instructions</a></p>
+                    </div>
 
                     <div class="config-section">
                         <h2 class="section-title"><span>⚙️</span> 1. Operation</h2>
@@ -232,6 +239,11 @@
             // Update UI
             document.querySelectorAll('.op-card').forEach(el => el.classList.remove('active'));
             document.querySelector(`.op-card[data-value="${op}"]`).classList.add('active');
+
+            // Update Titles
+            const opDisplay = op.charAt(0).toUpperCase() + op.slice(1);
+            document.getElementById('config-title').innerText = `Enter ${op} worksheet content`;
+            document.getElementById('config-subtitle').innerHTML = `Generate ${op} worksheets tailored to your needs! <a href="#" style="color: #4c6ef5; text-decoration: none;">See Instructions</a>`;
 
             // Update State
             currentConfig.type = op;
