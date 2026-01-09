@@ -117,14 +117,15 @@ class PDFGenerator {
                 if (isHorizontal) {
                     // Horizontal Layout
                     let equation = "";
-                    if (q.nums) {
-                        equation = q.nums.join(` ${pdfOp} `) + " = ";
+                    const nums = q.nums || [q.num1, q.num2];
+                    if (nums && nums[0] !== undefined) {
+                        equation = nums.join(` ${pdfOp} `) + " = ";
                     } else {
-                        equation = `${q.num1} ${pdfOp} ${q.num2} = `;
+                        equation = "0 + 0 = "; // Fallback
                     }
                     const eqText = equation;
                     const eqWidth = doc.getTextWidth(eqText);
-                    const availWidth = colWidth - 25; // Estimate safe area for eq + answer
+                    const availWidth = colWidth - 25;
 
                     if (eqWidth + 40 > availWidth) {
                         const scaledSize = Math.max(9, 16 * (availWidth / (eqWidth + 45)));
@@ -135,30 +136,32 @@ class PDFGenerator {
                     doc.text(eqText, x, y + 2);
 
                     if (isAnswerKey) {
-                        doc.text(q.answer.toString(), x + actualWidth + 2, y + 2);
+                        doc.setTextColor(0);
+                        doc.text((q.answer || 0).toString(), x + actualWidth + 2, y + 2);
                     } else {
                         doc.text("__________", x + actualWidth + 2, y + 2);
                     }
-                    doc.setFontSize(16); // Restore
+                    doc.setFontSize(16);
                 } else {
                     // Vertical Layout
                     let currentLineY = y;
                     const lineSpacing = 7;
+                    const nums = q.nums || [q.num1, q.num2];
 
-                    if (q.nums && q.nums.length > 2) {
-                        q.nums.forEach((num, i) => {
-                            const isLast = i === q.nums.length - 1;
-                            if (isLast) {
-                                doc.text(pdfOp, x, currentLineY);
-                            }
-                            doc.text(num.toString(), x + 15, currentLineY, { align: 'right' });
+                    if (nums && nums.length > 2) {
+                        nums.forEach((num, i) => {
+                            const isLast = i === nums.length - 1;
+                            if (isLast) doc.text(pdfOp, x, currentLineY);
+                            doc.text((num || 0).toString(), x + 15, currentLineY, { align: 'right' });
                             if (!isLast) currentLineY += lineSpacing;
                         });
                     } else {
-                        doc.text(q.num1.toString(), x + 15, currentLineY, { align: 'right' });
+                        const n1 = nums[0] !== undefined ? nums[0] : (q.num1 || 0);
+                        const n2 = nums[1] !== undefined ? nums[1] : (q.num2 || 0);
+                        doc.text(n1.toString(), x + 15, currentLineY, { align: 'right' });
                         currentLineY += lineSpacing;
                         doc.text(pdfOp, x, currentLineY);
-                        doc.text(q.num2.toString(), x + 15, currentLineY, { align: 'right' });
+                        doc.text(n2.toString(), x + 15, currentLineY, { align: 'right' });
                     }
 
                     // Draw horizontal line

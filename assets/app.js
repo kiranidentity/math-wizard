@@ -61,7 +61,7 @@ class WorksheetRenderer {
 
     render(data) {
         this.container.innerHTML = '';
-        this.container.style.display = 'block';
+        // Removed hardcoded display override to respect CSS flex/scaling
 
         // Add Action Bar at top
         this._renderActionBar(data);

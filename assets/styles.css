@@ -417,22 +417,29 @@ input:checked+.slider:before {
 
 /* Rendered Worksheet Styles */
 .worksheet-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    /* Large impact title */
     font-weight: 800;
     text-transform: uppercase;
     margin-bottom: 2rem;
-    border-bottom: 2px solid #000;
-    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #000;
+    padding-bottom: 1rem;
     text-align: center;
-    background: none;
-    -webkit-text-fill-color: initial;
     color: black;
 }
 
 .worksheet-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 5rem 3rem;
+    gap: 4rem 3rem;
+    /* Adjusted gap to match reference spacing */
+    width: 100%;
+}
+
+.worksheet-grid.horizontal-layout {
+    grid-template-columns: repeat(3, 1fr);
+    /* Restore 3 column support */
+    gap: 3rem 1.5rem;
 }
 
 /* Utilities */
