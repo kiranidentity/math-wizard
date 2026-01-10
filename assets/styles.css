@@ -385,6 +385,7 @@ header {
     background: white;
     color: var(--text-main);
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .stepper-value::-webkit-outer-spin-button,
@@ -799,9 +800,11 @@ input:checked+.slider:before {
         box-shadow: none;
         border: none;
         padding: 0;
-        margin: 0;
+        margin: 0 !important;
         width: 100%;
         page-break-after: always;
+        transform: none !important;
+        /* Ensure it's not scaled */
     }
 
     .answer-key-section {

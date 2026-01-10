@@ -16,7 +16,7 @@
     <meta property="og:title" content="Math Wizard | Free Printable Math Worksheets for Kids">
     <meta property="og:description"
         content="Generate custom math worksheets for kids in seconds. Choose difficulty, operations, and layout. Perfect for parents and teachers.">
-    <meta property="og:image" content="https://mathwizard.app/assets/og-image.jpg">
+    <!-- <meta property="og:image" content="https://mathwizard.app/assets/og-image.jpg"> -->
 
     <title>Math Wizard | Free Printable Math Worksheet Generator for Kids</title>
     <link rel="stylesheet" href="assets/styles.css">
@@ -35,25 +35,25 @@
 
             <section class="config-panel">
                 <div class="config-section">
-                    <h2 class="section-title"><span>⚙️</span> 1. Choose Operation</h2>
+                    <h2 class="section-title"><span role="img" aria-hidden="true">⚙️</span> 1. Choose Operation</h2>
                     <div class="operations-grid">
                         <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
-                            <span class="op-icon">➕</span>
+                            <span class="op-icon" role="img" aria-label="Addition">➕</span>
                             <div class="op-name">Addition</div>
                             <div class="op-example">12 + 45</div>
                         </div>
                         <div class="op-card" data-value="subtraction" onclick="selectOperation('subtraction')">
-                            <span class="op-icon">➖</span>
+                            <span class="op-icon" role="img" aria-label="Subtraction">➖</span>
                             <div class="op-name">Subtraction</div>
                             <div class="op-example">85 - 23</div>
                         </div>
                         <div class="op-card" data-value="multiplication" onclick="selectOperation('multiplication')">
-                            <span class="op-icon">✖️</span>
+                            <span class="op-icon" role="img" aria-label="Multiplication">✖️</span>
                             <div class="op-name">Multiplication</div>
                             <div class="op-example">12 × 5</div>
                         </div>
                         <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
-                            <span class="op-icon">🎲</span>
+                            <span class="op-icon" role="img" aria-label="Mixed Operations">🎲</span>
                             <div class="op-name">Mixed</div>
                             <div class="op-example">Mix practice</div>
                         </div>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="config-section">
-                    <h2 class="section-title"><span>🔢</span> 2. Difficulty (Digits)</h2>
+                    <h2 class="section-title"><span role="img" aria-hidden="true">🔢</span> 2. Difficulty (Digits)</h2>
                     <div class="digits-grid">
                         <div class="diff-card active" data-digits="1" onclick="selectDigits(1)">
                             <div class="diff-title"><span class="d-num">1</span> Digit</div>
@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="config-section">
-                    <h2 class="section-title"><span>📏</span> 3. Worksheet Layout</h2>
+                    <h2 class="section-title"><span role="img" aria-hidden="true">📏</span> 3. Worksheet Layout</h2>
                     <div class="layout-grid">
                         <div class="layout-card active" data-layout="vertical" onclick="selectLayout('vertical')">
                             <div class="mini-preview vertical">
@@ -116,7 +116,7 @@
 
                 <div class="settings-grid">
                     <div class="setting-group" id="q-count-setting">
-                        <label class="setting-label">Number of problems:</label>
+                        <label class="setting-label" for="q-count">Number of problems:</label>
                         <div class="stepper-control">
                             <button class="stepper-btn" onclick="updateCount(-5)" aria-label="Decrease">−</button>
                             <input type="number" id="q-count" value="20" min="5" max="60" readonly
@@ -126,7 +126,7 @@
                     </div>
 
                     <div id="terms-setting" class="setting-group">
-                        <label class="setting-label">Terms per problem:</label>
+                        <label class="setting-label" for="q-terms">Terms per problem:</label>
                         <div class="stepper-control">
                             <button class="stepper-btn" onclick="updateTerms(-1)" aria-label="Decrease">−</button>
                             <input type="number" id="q-terms" value="2" min="2" max="6" readonly class="stepper-value">
@@ -135,9 +135,9 @@
                     </div>
 
                     <div class="setting-group">
-                        <label class="setting-label">Include Answer Key?</label>
+                        <label class="setting-label" for="include-answers">Include Answer Key?</label>
                         <label class="switch">
-                            <input type="checkbox" id="include-answers">
+                            <input type="checkbox" id="include-answers" aria-label="Toggle Answer Key inclusion">
                             <span class="slider"></span>
                         </label>
                     </div>
