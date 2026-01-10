@@ -289,6 +289,16 @@
                 return 123456;
             };
 
+            // Generate a random number with exact digit count
+            const getRandomNum = (d, seed) => {
+                if (d === 1) return Math.min(9, 5 + seed);
+                const min = Math.pow(10, d - 1);
+                const max = Math.pow(10, d) - 1;
+                // Use seed to generate different but consistent numbers
+                const range = max - min;
+                return min + Math.floor((range * (0.3 + seed * 0.15)) % range);
+            };
+
             const n1 = getNum(digits);
 
             // Update Vertical Box - Show ALL terms
@@ -297,7 +307,7 @@
                 let vHTML = "";
                 for (let i = 0; i < terms; i++) {
                     const isLast = i === terms - 1;
-                    const val = i === 0 ? n1 : Math.floor(getNum(digits) * 0.6) + i;
+                    const val = i === 0 ? n1 : getRandomNum(digits, i);
                     vHTML += `<span>${isLast ? sym + ' ' : ''}${val}</span>`;
                 }
                 vHTML += `<div class="p-line"></div>`;
@@ -309,7 +319,7 @@
             if (hEq) {
                 let hText = n1.toString();
                 for (let i = 1; i < terms; i++) {
-                    hText += ` ${sym} ${Math.floor(getNum(digits) * 0.6) + i}`;
+                    hText += ` ${sym} ${getRandomNum(digits, i)}`;
                 }
                 hEq.innerText = hText + " = ___";
             }
