@@ -90,6 +90,30 @@
                     </div>
                 </div>
 
+                <div class="config-section">
+                    <h2 class="section-title"><span>📏</span> 3. Worksheet Layout</h2>
+                    <div class="layout-grid">
+                        <div class="layout-card active" data-layout="vertical" onclick="selectLayout('vertical')">
+                            <div class="mini-preview vertical">
+                                <span class="p-num">1)</span>
+                                <div id="preview-v-box" class="p-math">
+                                    <span id="preview-v-n1">8</span>
+                                    <span id="preview-v-n2">+ 5</span>
+                                    <div class="p-line"></div>
+                                </div>
+                            </div>
+                            <div class="layout-name">Vertical</div>
+                        </div>
+                        <div class="layout-card" data-layout="horizontal" onclick="selectLayout('horizontal')">
+                            <div class="mini-preview horizontal">
+                                <span class="p-num">1)</span>
+                                <span id="preview-h-eq" class="p-eq">8 + 5 = ___</span>
+                            </div>
+                            <div class="layout-name">Horizontal</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="settings-grid">
                     <div class="setting-group" id="q-count-setting">
                         <label class="setting-label">Number of problems:</label>
@@ -116,30 +140,6 @@
                             <input type="checkbox" id="include-answers">
                             <span class="slider"></span>
                         </label>
-                    </div>
-                </div>
-
-                <div class="config-section">
-                    <h2 class="section-title"><span>📏</span> 3. Worksheet Layout</h2>
-                    <div class="layout-grid">
-                        <div class="layout-card active" data-layout="vertical" onclick="selectLayout('vertical')">
-                            <div class="mini-preview vertical">
-                                <span class="p-num">1)</span>
-                                <div id="preview-v-box" class="p-math">
-                                    <span id="preview-v-n1">8</span>
-                                    <span id="preview-v-n2">+ 5</span>
-                                    <div class="p-line"></div>
-                                </div>
-                            </div>
-                            <div class="layout-name">Vertical</div>
-                        </div>
-                        <div class="layout-card" data-layout="horizontal" onclick="selectLayout('horizontal')">
-                            <div class="mini-preview horizontal">
-                                <span class="p-num">1)</span>
-                                <span id="preview-h-eq" class="p-eq">8 + 5 = ___</span>
-                            </div>
-                            <div class="layout-name">Horizontal</div>
-                        </div>
                     </div>
                 </div>
 
