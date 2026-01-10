@@ -88,30 +88,6 @@
                     </div>
                 </div>
 
-                <div class="config-section">
-                    <h2 class="section-title"><span>📏</span> 3. Worksheet Layout</h2>
-                    <div class="layout-grid">
-                        <div class="layout-card active" data-layout="vertical" onclick="selectLayout('vertical')">
-                            <div class="mini-preview vertical">
-                                <span class="p-num">1)</span>
-                                <div class="p-math">
-                                    <span id="preview-v-n1">8</span>
-                                    <span id="preview-v-n2">+ 5</span>
-                                    <div class="p-line"></div>
-                                </div>
-                            </div>
-                            <div class="layout-name">Vertical</div>
-                        </div>
-                        <div class="layout-card" data-layout="horizontal" onclick="selectLayout('horizontal')">
-                            <div class="mini-preview horizontal">
-                                <span class="p-num">1)</span>
-                                <span id="preview-h-eq" class="p-eq">8 + 5 = ___</span>
-                            </div>
-                            <div class="layout-name">Horizontal</div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="settings-grid">
                     <div class="setting-group" id="q-count-setting">
                         <label class="setting-label">Number of problems: <span id="q-count-val"
@@ -131,14 +107,36 @@
                         </div>
                     </div>
 
-                    <div id="terms-example-preview" class="example-preview-full">Example: 7 + 9</div>
-
                     <div class="setting-group">
                         <label class="setting-label">Include Answer Key?</label>
                         <label class="switch">
                             <input type="checkbox" id="include-answers">
                             <span class="slider"></span>
                         </label>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h2 class="section-title"><span>📏</span> 3. Worksheet Layout</h2>
+                    <div class="layout-grid">
+                        <div class="layout-card active" data-layout="vertical" onclick="selectLayout('vertical')">
+                            <div class="mini-preview vertical">
+                                <span class="p-num">1)</span>
+                                <div id="preview-v-box" class="p-math">
+                                    <span id="preview-v-n1">8</span>
+                                    <span id="preview-v-n2">+ 5</span>
+                                    <div class="p-line"></div>
+                                </div>
+                            </div>
+                            <div class="layout-name">Vertical</div>
+                        </div>
+                        <div class="layout-card" data-layout="horizontal" onclick="selectLayout('horizontal')">
+                            <div class="mini-preview horizontal">
+                                <span class="p-num">1)</span>
+                                <span id="preview-h-eq" class="p-eq">8 + 5 = ___</span>
+                            </div>
+                            <div class="layout-name">Horizontal</div>
+                        </div>
                     </div>
                 </div>
 
@@ -242,7 +240,7 @@
             }
 
             updateCardExamples(op);
-            updateLayoutPreviews(currentConfig.digits);
+            updateLayoutPreviews();
         }
 
         function updateCardExamples(op) {
@@ -268,12 +266,20 @@
             document.querySelectorAll('[data-digits]').forEach(el => el.classList.remove('active'));
             const card = document.querySelector(`[data-digits="${num}"]`);
             if (card) card.classList.add('active');
-            updateLayoutPreviews(num);
-            updateTermsVal(document.getElementById('q-terms').value);
+            updateLayoutPreviews();
         }
 
-        function updateLayoutPreviews(digits) {
+        function updateTermsVal(val) {
+            document.getElementById('q-terms-val').innerText = val;
+            currentConfig.terms = parseInt(val);
+            updateLayoutPreviews();
+        }
+
+        function updateLayoutPreviews() {
+            const digits = currentConfig.digits || 1;
+            const terms = (currentConfig.type === 'addition' || currentConfig.type === 'mixed') ? (currentConfig.terms || 2) : 2;
             const sym = currentConfig.type === 'subtraction' ? '−' : (currentConfig.type === 'multiplication' ? '×' : '+');
+
             const getNum = (d) => {
                 if (d === 1) return 8;
                 if (d === 2) return 12;
@@ -282,17 +288,35 @@
                 if (d === 5) return 12345;
                 return 123456;
             };
+
             const n1 = getNum(digits);
-            // Just show 2 terms in layout preview for simplicity unless it's addition
-            const n2 = Math.floor(getNum(digits) * 0.6) + 1;
 
-            const v1 = document.getElementById('preview-v-n1');
-            const v2 = document.getElementById('preview-v-n2');
+            // Update Vertical Box
+            const vBox = document.getElementById('preview-v-box');
+            if (vBox) {
+                let vHTML = "";
+                const displayTermsV = Math.min(terms, 3);
+                for (let i = 0; i < displayTermsV; i++) {
+                    const isLast = i === displayTermsV - 1;
+                    const val = i === 0 ? n1 : Math.floor(getNum(digits) * 0.6) + i;
+                    vHTML += `<span>${isLast ? sym + ' ' : ''}${val}</span>`;
+                }
+                if (terms > 3) vHTML += `<span style="font-size: 0.6rem; opacity: 0.5;">+ ${terms - 3} more</span>`;
+                vHTML += `<div class="p-line"></div>`;
+                vBox.innerHTML = vHTML;
+            }
+
+            // Update Horizontal Line
             const hEq = document.getElementById('preview-h-eq');
-
-            if (v1) v1.innerText = n1;
-            if (v2) v2.innerText = `${sym} ${n2}`;
-            if (hEq) hEq.innerText = `${n1} ${sym} ${n2} = ___`;
+            if (hEq) {
+                let hText = n1.toString();
+                const displayTermsH = Math.min(terms, 2);
+                for (let i = 1; i < displayTermsH; i++) {
+                    hText += ` ${sym} ${Math.floor(getNum(digits) * 0.6) + i}`;
+                }
+                if (terms > 2) hText += ` ${sym} ...`;
+                hEq.innerText = hText + " = ___";
+            }
         }
 
         function selectLayout(layout) {
@@ -303,31 +327,6 @@
 
         function updateRangeVal(id, val) {
             document.getElementById(id).innerText = val;
-        }
-
-        function updateTermsVal(val) {
-            document.getElementById('q-terms-val').innerText = val;
-            const preview = document.getElementById('terms-example-preview');
-            if (!preview) return;
-            const count = parseInt(val);
-            const d = currentConfig.digits || 1;
-
-            const getBase = (digits) => {
-                if (digits === 1) return 5;
-                if (digits === 2) return 25;
-                if (digits === 3) return 125;
-                if (digits === 4) return 1250;
-                if (digits === 5) return 12500;
-                return 125000;
-            };
-
-            let base = getBase(d);
-            let ex = base.toString();
-            for (let i = 1; i < count; i++) {
-                let nextNum = base + (i * Math.pow(10, d - 1) / 2);
-                ex += " + " + Math.floor(nextNum);
-            }
-            preview.innerText = `Example: ${ex}`;
         }
 
         async function generate() {
