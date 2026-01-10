@@ -90,20 +90,21 @@
 
                 <div class="settings-grid">
                     <div class="setting-group" id="q-count-setting">
-                        <label class="setting-label">Number of problems: <span id="q-count-val"
-                                class="range-value">20</span></label>
-                        <div class="range-wrap">
-                            <input type="range" id="q-count" min="5" max="60" step="5" value="20"
-                                oninput="updateRangeVal('q-count-val', this.value)">
+                        <label class="setting-label">Number of problems:</label>
+                        <div class="stepper-control">
+                            <button class="stepper-btn" onclick="updateCount(-5)" aria-label="Decrease">−</button>
+                            <input type="number" id="q-count" value="20" min="5" max="60" readonly
+                                class="stepper-value">
+                            <button class="stepper-btn" onclick="updateCount(5)" aria-label="Increase">+</button>
                         </div>
                     </div>
 
                     <div id="terms-setting" class="setting-group">
-                        <label class="setting-label">Terms per problem: <span id="q-terms-val"
-                                class="range-value">2</span></label>
-                        <div class="range-wrap">
-                            <input type="range" id="q-terms" min="2" max="6" step="1" value="2"
-                                oninput="updateTermsVal(this.value)">
+                        <label class="setting-label">Terms per problem:</label>
+                        <div class="stepper-control">
+                            <button class="stepper-btn" onclick="updateTerms(-1)" aria-label="Decrease">−</button>
+                            <input type="number" id="q-terms" value="2" min="2" max="6" readonly class="stepper-value">
+                            <button class="stepper-btn" onclick="updateTerms(1)" aria-label="Increase">+</button>
                         </div>
                     </div>
 
@@ -269,9 +270,21 @@
             updateLayoutPreviews();
         }
 
-        function updateTermsVal(val) {
-            document.getElementById('q-terms-val').innerText = val;
-            currentConfig.terms = parseInt(val);
+        function updateCount(delta) {
+            const input = document.getElementById('q-count');
+            let value = parseInt(input.value) + delta;
+            value = Math.max(5, Math.min(60, value));
+            // Ensure it's a multiple of 5
+            value = Math.round(value / 5) * 5;
+            input.value = value;
+        }
+
+        function updateTerms(delta) {
+            const input = document.getElementById('q-terms');
+            let value = parseInt(input.value) + delta;
+            value = Math.max(2, Math.min(6, value));
+            input.value = value;
+            currentConfig.terms = value;
             updateLayoutPreviews();
         }
 

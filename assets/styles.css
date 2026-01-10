@@ -277,55 +277,64 @@ header {
     color: var(--primary);
 }
 
-.range-wrap {
+.stepper-control {
     display: flex;
     align-items: center;
-    width: 100%;
-    min-height: 24px;
+    gap: 0;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: white;
+    width: fit-content;
 }
 
-input[type="range"] {
-    width: 100%;
-    height: 6px;
-    accent-color: var(--primary);
-    -webkit-appearance: none;
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-}
-
-input[type="range"]::-webkit-slider-track {
-    width: 100%;
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-}
-
-input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
-    margin-top: -7px;
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
+.stepper-btn {
+    background: white;
     border: none;
+    padding: 0.75rem 1.25rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stepper-btn:hover {
+    background: #f8fafc;
+    color: var(--primary);
+}
+
+.stepper-btn:active {
+    background: #e2e8f0;
+}
+
+.stepper-value {
+    border: none;
+    border-left: 2px solid var(--border);
+    border-right: 2px solid var(--border);
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: 60px;
+    background: white;
+    color: var(--text-main);
+    -moz-appearance: textfield;
+}
+
+.stepper-value::-webkit-outer-spin-button,
+.stepper-value::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.stepper-value:focus {
+    outline: none;
 }
 
 .example-preview {
