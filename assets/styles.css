@@ -97,13 +97,11 @@ header {
 }
 
 .operations-grid {
-    grid-template-columns: repeat(4, 1fr);
-    /* Force single row for 4 ops */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .digits-grid {
-    grid-template-columns: repeat(6, 1fr);
-    /* Force single row for 6 digits */
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
 }
 
 .layout-grid {
@@ -248,11 +246,34 @@ header {
 .settings-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Forced single row */
     gap: 2rem;
     margin-bottom: 2.5rem;
     padding-top: 2rem;
     border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .setting-group {
+        align-items: center;
+    }
+
+    .setting-label {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .config-panel {
+        padding: 1.5rem;
+    }
+
+    .brand-title {
+        font-size: 2rem;
+    }
 }
 
 .setting-group {
@@ -514,17 +535,26 @@ input:checked+.slider:before {
 
 /* Response Scaling for Preview */
 @media (max-width: 900px) {
+    #worksheet-preview {
+        padding: 1rem;
+        min-height: auto;
+        overflow-x: auto;
+    }
+
     .worksheet-container {
-        transform-origin: top center;
-        transform: scale(0.8);
-        margin-bottom: -60mm;
+        transform-origin: top left;
+        transform: scale(0.6);
+        margin-bottom: -120mm;
+        margin-right: -80mm;
+        /* Compensate for width reduction */
     }
 }
 
 @media (max-width: 600px) {
     .worksheet-container {
-        transform: scale(0.5);
-        margin-bottom: -150mm;
+        transform: scale(0.40);
+        margin-bottom: -180mm;
+        margin-right: -126mm;
     }
 }
 
