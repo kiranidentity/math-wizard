@@ -187,7 +187,7 @@ header {
 
 /* Layout Specifics & Mini Previews */
 .mini-preview {
-    height: 50px;
+    min-height: 70px;
     background: #f8fafc;
     border-radius: var(--radius-sm);
     margin-bottom: 0.5rem;
@@ -195,9 +195,10 @@ header {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    padding: 0.75rem;
     font-family: 'Courier New', Courier, monospace;
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #475569;
     border: 1px solid #e2e8f0;
 }
@@ -219,7 +220,8 @@ header {
 }
 
 .p-math span {
-    line-height: 1.1;
+    line-height: 1.2;
+    font-size: 0.75rem;
 }
 
 .p-line {
@@ -230,8 +232,11 @@ header {
 }
 
 .mini-preview.horizontal {
-    white-space: nowrap;
-    padding: 0 0.5rem;
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: center;
+    padding: 0.75rem;
+    line-height: 1.4;
 }
 
 .layout-name {
@@ -254,6 +259,11 @@ header {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    align-items: stretch;
+}
+
+.setting-group:last-child {
+    justify-content: center;
 }
 
 .setting-label {
