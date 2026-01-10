@@ -291,30 +291,26 @@
 
             const n1 = getNum(digits);
 
-            // Update Vertical Box
+            // Update Vertical Box - Show ALL terms
             const vBox = document.getElementById('preview-v-box');
             if (vBox) {
                 let vHTML = "";
-                const displayTermsV = Math.min(terms, 3);
-                for (let i = 0; i < displayTermsV; i++) {
-                    const isLast = i === displayTermsV - 1;
+                for (let i = 0; i < terms; i++) {
+                    const isLast = i === terms - 1;
                     const val = i === 0 ? n1 : Math.floor(getNum(digits) * 0.6) + i;
                     vHTML += `<span>${isLast ? sym + ' ' : ''}${val}</span>`;
                 }
-                if (terms > 3) vHTML += `<span style="font-size: 0.6rem; opacity: 0.5;">+ ${terms - 3} more</span>`;
                 vHTML += `<div class="p-line"></div>`;
                 vBox.innerHTML = vHTML;
             }
 
-            // Update Horizontal Line
+            // Update Horizontal Line - Show ALL terms
             const hEq = document.getElementById('preview-h-eq');
             if (hEq) {
                 let hText = n1.toString();
-                const displayTermsH = Math.min(terms, 2);
-                for (let i = 1; i < displayTermsH; i++) {
+                for (let i = 1; i < terms; i++) {
                     hText += ` ${sym} ${Math.floor(getNum(digits) * 0.6) + i}`;
                 }
-                if (terms > 2) hText += ` ${sym} ...`;
                 hEq.innerText = hText + " = ___";
             }
         }
