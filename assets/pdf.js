@@ -69,14 +69,16 @@ class PDFGenerator {
             const numCols = calculateNumCols();
             const colWidth = contentWidth / numCols;
 
-            const colX = [];
-            for (let c = 0; c < numCols; c++) {
-                const xOffset = isHorizontal && numCols === 1 ? 25 : (isHorizontal ? 10 : 25);
-                colX.push(margin + (c * colWidth) + xOffset);
-            }
-
             const rowHeight = isHorizontal ? 15 : ((terms * 8) + 12);
             let currentPageY = yPos;
+
+            // Standard offset to ensure space for question number "1) " which is drawn at x-15
+            const xOffset = 25;
+
+            const colX = [];
+            for (let c = 0; c < numCols; c++) {
+                colX.push(margin + (c * colWidth) + xOffset);
+            }
 
             // Loop
             data.questions.forEach((q, i) => {

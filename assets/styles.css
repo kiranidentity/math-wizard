@@ -577,23 +577,25 @@ input:checked+.slider:before {
     #worksheet-preview {
         padding: 1rem;
         min-height: auto;
-        overflow-x: auto;
+        overflow-x: hidden;
+        /* Hide scrollbars if scale is perfect */
     }
 
     .worksheet-container {
-        transform-origin: top left;
+        transform-origin: top center;
+        /* Center the paper */
         transform: scale(0.6);
         margin-bottom: -120mm;
-        margin-right: -80mm;
-        /* Compensate for width reduction */
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
 @media (max-width: 600px) {
     .worksheet-container {
-        transform: scale(0.40);
-        margin-bottom: -180mm;
-        margin-right: -126mm;
+        transform: scale(0.45);
+        /* Slightly bigger for readability */
+        margin-bottom: -160mm;
     }
 }
 
