@@ -108,9 +108,7 @@ header {
 
 .layout-grid {
     grid-template-columns: repeat(2, 1fr);
-    max-width: 320px;
-    /* Constrain width to keep it crisp */
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 /* Option Cards */
@@ -120,8 +118,7 @@ header {
     background: var(--surface);
     border: 2px solid var(--border);
     border-radius: var(--radius-md);
-    padding: 0.75rem 0.5rem;
-    /* Reduced padding for crisper look */
+    padding: 1.25rem;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -165,31 +162,27 @@ header {
 
 /* Operation Specifics */
 .op-icon {
-    font-size: 1.5rem;
-    /* Shrunk icon */
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
     display: block;
 }
 
 .op-name {
     font-weight: 700;
-    font-size: 0.9rem;
-    /* Slightly smaller font */
-    margin-bottom: 0.15rem;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
 }
 
 .op-example,
 .diff-example {
-    font-size: 0.75rem;
-    /* Smaller examples */
+    font-size: 0.85rem;
     color: var(--text-muted);
 }
 
 /* Difficulty Specifics */
 .diff-title {
     font-weight: 700;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Layout Specifics & Mini Previews */
