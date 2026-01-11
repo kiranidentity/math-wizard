@@ -52,11 +52,6 @@
                             <div class="op-name">Multiplication</div>
                             <div class="op-example">12 × 5</div>
                         </div>
-                        <div class="op-card" data-value="mixed" onclick="selectOperation('mixed')">
-                            <span class="op-icon" role="img" aria-label="Mixed Operations">🎲</span>
-                            <div class="op-name">Mixed</div>
-                            <div class="op-example">Mix practice</div>
-                        </div>
                     </div>
                 </div>
 
@@ -235,7 +230,7 @@
 
             const termsEl = document.getElementById('terms-setting');
             const termsPreview = document.getElementById('terms-example-preview');
-            if (op === 'addition' || op === 'mixed') {
+            if (op === 'addition') {
                 termsEl.style.display = '';
                 if (termsPreview) termsPreview.style.display = '';
             } else {

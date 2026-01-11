@@ -1,4 +1,4 @@
-const CACHE_NAME = 'math-wizard-v73';
+const CACHE_NAME = 'math-wizard-v74';
 const ASSETS = [
     './',
     './index.html',
