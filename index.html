@@ -340,6 +340,13 @@
             currentConfig.layout = layout;
             document.querySelectorAll('[data-layout]').forEach(el => el.classList.remove('active'));
             document.querySelector(`[data-layout="${layout}"]`).classList.add('active');
+
+            // Update preview image
+            const img = document.querySelector('.mockup-img');
+            if (img) {
+                if (layout === 'horizontal') img.src = 'assets/2x2%20horizontal.jpeg';
+                else img.src = 'assets/1x2%20vertical.jpeg';
+            }
         }
 
         function updateRangeVal(id, val) {

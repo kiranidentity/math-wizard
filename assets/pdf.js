@@ -89,8 +89,10 @@ class PDFGenerator {
             // How many rows mathematically fit?
             let rowsPerCol = Math.floor(availableHeight / problemHeight);
 
-            // Cap at 5 rows (10 items total) for aesthetic reasons, unless it's strictly 1 col
-            if (rowsPerCol > 5) rowsPerCol = 5;
+            // Cap at 5 rows (10 items total) for aesthetic reasons, usually.
+            // BUT if it's strictly 1 col (e.g. wide horizontal), we allow up to 10 rows.
+            const maxRows = numCols === 1 ? 10 : 5;
+            if (rowsPerCol > maxRows) rowsPerCol = maxRows;
 
             const itemsPerPage = rowsPerCol * numCols;
             const rowsPerPage = Math.ceil(itemsPerPage / numCols); // Should equal rowsPerCol roughly
