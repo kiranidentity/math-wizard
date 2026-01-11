@@ -144,15 +144,11 @@
                 </div>
 
                 <button class="btn-primary" onclick="generate()">
-                    Create Worksheet
+                    Download PDF Worksheet
                 </button>
             </section>
 
-            <section id="preview-section" class="info-section hidden no-print">
-                <div id="worksheet-preview">
-                    <!-- Live content here -->
-                </div>
-            </section>
+            <!-- Preview section removed -->
 
             <section class="info-section">
                 <div class="features-grid">
@@ -379,20 +375,14 @@
                 const engine = new WorksheetGenerator();
                 const data = engine.generate(currentConfig);
 
-                const previewSec = document.getElementById('preview-section');
-                previewSec.classList.remove('hidden');
-
-                const renderer = new WorksheetRenderer('worksheet-preview');
-                renderer.render(data);
-
-                window.lastData = data; // Save for PDF
-
-                // Smooth scroll to preview
-                document.getElementById('worksheet-preview').style.display = 'block';
-                document.getElementById('worksheet-preview').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
+                // Direct PDF Generation (No Preview)
+                if (window.PDFGenerator) {
+                    const gen = new window.PDFGenerator();
+                    gen.generate(data);
+                }
             } catch (e) {
                 console.error(e);
+                alert('Error generating PDF. Please try again.');
             } finally {
                 btn.classList.remove('generating');
                 btn.innerText = originalText;

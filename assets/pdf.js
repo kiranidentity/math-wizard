@@ -69,7 +69,8 @@ class PDFGenerator {
             const numCols = calculateNumCols();
             const colWidth = contentWidth / numCols;
 
-            const rowHeight = isHorizontal ? 15 : ((terms * 8) + 12);
+            // Improved vertical spacing
+            const rowHeight = isHorizontal ? 18 : ((terms * 9) + 15);
             let currentPageY = yPos;
 
             // Standard offset to ensure space for question number "1) " which is drawn at x-15
