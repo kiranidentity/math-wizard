@@ -812,3 +812,36 @@ input:checked+.slider:before {
         /* Already handled by page-break or PDF logic */
     }
 }
+
+/* Mockup Preview */
+.pdf-preview-mockup {
+    margin-top: 2rem;
+    text-align: center;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--border);
+}
+
+.preview-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mockup-img {
+    max-width: 100%;
+    width: 250px;
+    height: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.3s ease;
+}
+
+.mockup-img:hover {
+    transform: scale(1.05);
+}
