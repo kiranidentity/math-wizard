@@ -69,15 +69,24 @@ class PDFGenerator {
             const numCols = calculateNumCols();
             const colWidth = contentWidth / numCols;
 
-            // Force items per page based on complexity (terms)
-            // If terms are high, we need more vertical space per problem.
-            let itemsPerPage = 10;
-            if (terms >= 5) itemsPerPage = 6;      // 3 rows
-            else if (terms === 4) itemsPerPage = 8; // 4 rows
-
-            const rowsPerPage = Math.ceil(itemsPerPage / numCols);
             const startY = margin + 35;
             const availableHeight = pageHeight - startY - margin - 10;
+
+            // Dynamic Layout Calculation
+            // Calculate exact height needed per problem to guarantee fit
+            const lineSpacing = 7;
+            const linesPerProblem = terms + 1; // terms + answer line
+            const problemHeight = (linesPerProblem * lineSpacing) + 10; // +10mm buffer for neatness
+
+            // How many rows mathematically fit?
+            let rowsPerCol = Math.floor(availableHeight / problemHeight);
+
+            // Cap at 5 rows (10 items total) for aesthetic reasons, unless it's strictly 1 col
+            if (rowsPerCol > 5) rowsPerCol = 5;
+
+            const itemsPerPage = rowsPerCol * numCols;
+            const rowsPerPage = Math.ceil(itemsPerPage / numCols); // Should equal rowsPerCol roughly
+
             const dynamicRowHeight = availableHeight / rowsPerPage;
 
             // Horizontal Alignment Helper
