@@ -69,25 +69,32 @@ class PDFGenerator {
             const numCols = calculateNumCols();
             const colWidth = contentWidth / numCols;
 
-            // Force 10 items per page for clean layout
-            const ITEMS_PER_PAGE = 10;
-            const rowsPerPage = Math.ceil(ITEMS_PER_PAGE / numCols);
+            // Force items per page based on complexity (terms)
+            // If terms are high, we need more vertical space per problem.
+            let itemsPerPage = 10;
+            if (terms >= 5) itemsPerPage = 6;      // 3 rows
+            else if (terms === 4) itemsPerPage = 8; // 4 rows
+
+            const rowsPerPage = Math.ceil(itemsPerPage / numCols);
             const startY = margin + 35;
-            const availableHeight = pageHeight - startY - margin - 10; // -10 buffer
-            // Calculate dynamic spacing to fill the page cleanly
+            const availableHeight = pageHeight - startY - margin - 10;
             const dynamicRowHeight = availableHeight / rowsPerPage;
 
-            // Standard offset to ensure space for question number "1) " which is drawn at x-15
-            const xOffset = 25;
+            // Horizontal Alignment Helper
+            // We align right. As digits increase, we need to push the alignment point further right
+            // so the number doesn't grow leftwards into the operator.
+            // Base offset 15 fits ~3 digits. For 6 digits, we need ~30.
+            const alignOffset = 15 + Math.max(0, (digits - 3) * 3.5);
+
             const colX = [];
             for (let c = 0; c < numCols; c++) {
-                colX.push(margin + (c * colWidth) + xOffset);
+                colX.push(margin + (c * colWidth) + 25); // Keep xOffset for question number
             }
 
             // Loop
             data.questions.forEach((q, i) => {
-                const pageIndex = Math.floor(i / ITEMS_PER_PAGE);
-                const localIndex = i % ITEMS_PER_PAGE;
+                const pageIndex = Math.floor(i / itemsPerPage);
+                const localIndex = i % itemsPerPage;
                 const colIndex = localIndex % numCols;
                 const rowIndex = Math.floor(localIndex / numCols);
 
@@ -165,26 +172,26 @@ class PDFGenerator {
                         nums.forEach((num, i) => {
                             const isLast = i === nums.length - 1;
                             if (isLast) doc.text(pdfOp, x, currentLineY);
-                            doc.text((num || 0).toString(), x + 15, currentLineY, { align: 'right' });
+                            doc.text((num || 0).toString(), x + alignOffset, currentLineY, { align: 'right' });
                             if (!isLast) currentLineY += lineSpacing;
                         });
                     } else {
                         const n1 = nums[0] !== undefined ? nums[0] : (q.num1 || 0);
                         const n2 = nums[1] !== undefined ? nums[1] : (q.num2 || 0);
-                        doc.text(n1.toString(), x + 15, currentLineY, { align: 'right' });
+                        doc.text(n1.toString(), x + alignOffset, currentLineY, { align: 'right' });
                         currentLineY += lineSpacing;
                         doc.text(pdfOp, x, currentLineY);
-                        doc.text(n2.toString(), x + 15, currentLineY, { align: 'right' });
+                        doc.text(n2.toString(), x + alignOffset, currentLineY, { align: 'right' });
                     }
 
                     // Draw horizontal line
                     doc.setLineWidth(0.5);
-                    doc.line(x - 2, currentLineY + 2, x + 17, currentLineY + 2);
+                    doc.line(x - 2, currentLineY + 2, x + alignOffset + 2, currentLineY + 2);
 
                     // ANSWER (Only if Answer Key)
                     if (isAnswerKey) {
                         doc.setTextColor(0);
-                        doc.text(q.answer.toString(), x + 15, currentLineY + 9, { align: 'right' });
+                        doc.text(q.answer.toString(), x + alignOffset, currentLineY + 9, { align: 'right' });
                     }
                 }
             });
