@@ -69,13 +69,16 @@ class PDFGenerator {
             const numCols = calculateNumCols();
             const colWidth = contentWidth / numCols;
 
-            // Improved vertical spacing
-            const rowHeight = isHorizontal ? 18 : ((terms * 9) + 15);
-            let currentPageY = yPos;
+            // Force 10 items per page for clean layout
+            const ITEMS_PER_PAGE = 10;
+            const rowsPerPage = Math.ceil(ITEMS_PER_PAGE / numCols);
+            const startY = margin + 35;
+            const availableHeight = pageHeight - startY - margin - 10; // -10 buffer
+            // Calculate dynamic spacing to fill the page cleanly
+            const dynamicRowHeight = availableHeight / rowsPerPage;
 
             // Standard offset to ensure space for question number "1) " which is drawn at x-15
             const xOffset = 25;
-
             const colX = [];
             for (let c = 0; c < numCols; c++) {
                 colX.push(margin + (c * colWidth) + xOffset);
@@ -83,32 +86,39 @@ class PDFGenerator {
 
             // Loop
             data.questions.forEach((q, i) => {
-                const colIndex = i % numCols;
+                const pageIndex = Math.floor(i / ITEMS_PER_PAGE);
+                const localIndex = i % ITEMS_PER_PAGE;
+                const colIndex = localIndex % numCols;
+                const rowIndex = Math.floor(localIndex / numCols);
 
                 // Page Break Check
-                if (i > 0 && colIndex === 0) {
-                    currentPageY += rowHeight;
-                    if (currentPageY + rowHeight > (pageHeight - margin - 15)) {
-                        doc.addPage();
-                        doc.setLineWidth(1.5);
-                        doc.rect(margin, margin, pageWidth - (margin * 2), pageHeight - (margin * 2));
-                        currentPageY = margin + 20;
-                    }
+                if (i > 0 && localIndex === 0) {
+                    doc.addPage();
+                    doc.setLineWidth(1.5);
+                    doc.rect(margin, margin, pageWidth - (margin * 2), pageHeight - (margin * 2));
+                    // Redraw Border/Title on new page? Usually handled by "Header" per set, 
+                    // but here we just need a blank border canvas technically.
+                    // The function `drawDocSet` handles the whole set, but `doc.addPage()` makes a blank one.
+                    // We should re-add the border. 
                 }
 
+                // IMPORTANT: The original code drew the header ONCE at start.
+                // If we add a page, we lose the border/header. 
+                // We'll keep it simple: Just border on sub-pages.
+
                 const x = colX[colIndex];
-                const y = currentPageY;
+                // Position based on row index and dynamic height
+                const y = startY + (rowIndex * dynamicRowHeight);
 
                 // Question Number
                 doc.setFontSize(12);
                 doc.setFont("helvetica", "normal");
                 if (isAnswerKey) {
-                    doc.setTextColor(100); // Grey for number in answer key to highlight answer? Or keep black. black is fine.
+                    doc.setTextColor(100);
                     doc.setTextColor(0);
                 }
                 doc.text(`${i + 1})`, x - 15, y + 2);
 
-                // Problem
                 // Problem Rendering
                 doc.setFontSize(16);
                 doc.setFont("courier", "bold");
