@@ -75,8 +75,16 @@ class PDFGenerator {
             // Dynamic Layout Calculation
             // Calculate exact height needed per problem to guarantee fit
             const lineSpacing = 7;
-            const linesPerProblem = terms + 1; // terms + answer line
-            const problemHeight = (linesPerProblem * lineSpacing) + 10; // +10mm buffer for neatness
+            let linesPerProblem = terms + 1; // terms + answer line (Vertical default)
+
+            if (isHorizontal) {
+                // Horizontal layout is much more compact vertically
+                linesPerProblem = 3; // Equivalent space of ~3 lines is plenty
+            }
+
+            const problemHeight = (linesPerProblem * lineSpacing) + 10; // +10mm buffer
+
+            // How many rows mathematically fit?
 
             // How many rows mathematically fit?
             let rowsPerCol = Math.floor(availableHeight / problemHeight);
