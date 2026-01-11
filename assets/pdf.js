@@ -180,7 +180,7 @@ class PDFGenerator {
                     if (nums && nums.length > 2) {
                         nums.forEach((num, i) => {
                             const isLast = i === nums.length - 1;
-                            if (isLast) doc.text(pdfOp, x, currentLineY);
+                            if (isLast) doc.text(pdfOp, x - 4, currentLineY);
                             doc.text((num || 0).toString(), x + alignOffset, currentLineY, { align: 'right' });
                             if (!isLast) currentLineY += lineSpacing;
                         });
@@ -189,7 +189,7 @@ class PDFGenerator {
                         const n2 = nums[1] !== undefined ? nums[1] : (q.num2 || 0);
                         doc.text(n1.toString(), x + alignOffset, currentLineY, { align: 'right' });
                         currentLineY += lineSpacing;
-                        doc.text(pdfOp, x, currentLineY);
+                        doc.text(pdfOp, x - 4, currentLineY);
                         doc.text(n2.toString(), x + alignOffset, currentLineY, { align: 'right' });
                     }
 
