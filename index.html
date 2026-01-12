@@ -250,13 +250,16 @@
             document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
 
             const layoutSec = document.getElementById('layout-section');
+            const img = document.querySelector('.mockup-img');
+
             if (mode === 'statement') {
                 if (layoutSec) layoutSec.style.display = 'none';
                 currentConfig.layout = 'word-problem';
 
-                // Hide terms selector
                 const termsEl = document.getElementById('terms-setting');
                 if (termsEl) termsEl.style.display = 'none';
+
+                if (img) img.src = 'assets/Addition%20Statement.jpeg';
             } else {
                 if (layoutSec) layoutSec.style.display = 'block';
                 const activeLayout = document.querySelector('.layout-card.active');
@@ -265,6 +268,11 @@
                 if (currentConfig.type === 'addition') {
                     const termsEl = document.getElementById('terms-setting');
                     if (termsEl) termsEl.style.display = '';
+                }
+
+                if (img) {
+                    if (currentConfig.layout === 'horizontal') img.src = 'assets/2x2%20horizontal.jpeg';
+                    else img.src = 'assets/Addition%20Numeric.jpeg';
                 }
             }
         }
@@ -404,7 +412,7 @@
             const img = document.querySelector('.mockup-img');
             if (img) {
                 if (layout === 'horizontal') img.src = 'assets/2x2%20horizontal.jpeg';
-                else img.src = 'assets/1x2%20vertical.jpeg';
+                else img.src = 'assets/Addition%20Numeric.jpeg';
             }
         }
 
