@@ -29,21 +29,13 @@ class PDFGenerator {
             doc.setFontSize(18); // Reduced from 22
 
             const title = isAnswerKey ? `${data.config.type} ANSWER KEY` : `${data.config.type} Practice`;
-            doc.text(title.toUpperCase(), margin + 10, margin + 12);
+            // Center the title for a clean, simple look
+            doc.text(title.toUpperCase(), pageWidth / 2, margin + 12, { align: 'center' });
 
             doc.setFont("helvetica", "normal");
             doc.setFontSize(11);
 
-            if (!isAnswerKey) {
-                // Right-aligned meta block
-                const metaX = pageWidth - margin - 5;
-                const lineHeight = 6;
-                let metaY = margin + 5;
-
-                doc.text("Name: ________________________", metaX, metaY, { align: 'right' });
-                metaY += lineHeight;
-                doc.text("Date: ________________________", metaX, metaY, { align: 'right' });
-            }
+            // Meta block removed (Name/Date) as requested
 
             doc.setLineWidth(1.5);
             doc.line(margin + 10, margin + 25, pageWidth - margin - 10, margin + 25);
