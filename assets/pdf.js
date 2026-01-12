@@ -24,18 +24,27 @@ class PDFGenerator {
         // Helper to draw a complete set of questions (either Problems or Answers)
         const drawDocSet = (isAnswerKey) => {
             // --- Header (Per Set) ---
+            // --- Header (Per Set) ---
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
+            doc.setFontSize(18); // Reduced from 22
 
             const title = isAnswerKey ? `${data.config.type} ANSWER KEY` : `${data.config.type} Practice`;
-            doc.text(title.toUpperCase(), margin + 10, margin + 15);
+            doc.text(title.toUpperCase(), margin + 10, margin + 12);
 
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(14);
+            doc.setFontSize(11);
 
             if (!isAnswerKey) {
-                doc.text("Date: ____________________", pageWidth - margin - 10, margin + 12, { align: 'right' });
-                doc.text(`Score: _________ / ${data.questions.length}`, pageWidth - margin - 10, margin + 20, { align: 'right' });
+                // Right-aligned meta block
+                const metaX = pageWidth - margin - 5;
+                const lineHeight = 6;
+                let metaY = margin + 5;
+
+                doc.text("Name: ________________________", metaX, metaY, { align: 'right' });
+                metaY += lineHeight;
+                doc.text("Date: ________________________", metaX, metaY, { align: 'right' });
+                metaY += lineHeight;
+                doc.text(`Score: _________ / ${data.questions.length}`, metaX, metaY, { align: 'right' });
             }
 
             doc.setLineWidth(1.5);
