@@ -83,9 +83,9 @@ class PDFGenerator {
                 linesPerProblem = 3; // Equivalent space of ~3 lines is plenty
             }
             if (isWordProblem) {
-                // Single column with inline Answer (Right aligned).
-                // Text wraps (max 2-3 lines usually) + buffer.
-                linesPerProblem = 3;
+                // Single column with blank space below for answer/working.
+                // Text (2 lines) + Gap (2 lines) = ~4 lines total vertical space.
+                linesPerProblem = 4;
             }
 
             // Reduced buffer from 10mm to 5mm to allow tighter packing
@@ -161,35 +161,26 @@ class PDFGenerator {
                 if (pdfOp === '÷') pdfOp = String.fromCharCode(247);
 
                 if (isWordProblem) {
-                    doc.setFontSize(11); // Slightly smaller for text
+                    doc.setFontSize(11);
                     doc.setFont("helvetica", "normal");
 
-                    // Layout: Text on Left, Answer on Right
-                    // Calculate TRUE available width considering the indentation 'x'
+                    // Layout: Full width text, Answer in spacing
+                    // Calculate available width
                     const effectivePageRight = pageWidth - margin;
                     const availableWidth = effectivePageRight - x - 5;
 
-                    const answerWidth = 55; // Enough for "Ans: ______" at 12pt
-                    const gap = 8;
-                    const textWidth = availableWidth - answerWidth - gap;
-
                     const text = q.questionText || "Problem text missing.";
-                    const splitText = doc.splitTextToSize(text, textWidth);
+                    const splitText = doc.splitTextToSize(text, availableWidth);
 
                     // Render wrapped text
                     doc.text(splitText, x, y);
 
-                    // Render Answer Space on the right
-                    const textHeight = (splitText.length - 1) * 5;
-                    const ansY = y + textHeight;
-                    const ansX = x + textWidth + gap;
-
-                    doc.setFontSize(12); // Reduced from 16 to fit better
-                    doc.setFont("courier", "bold");
+                    // For Answer Key, print answer below. For Worksheet, leave blank.
                     if (isAnswerKey) {
-                        doc.text(`Ans: ${q.answer}`, ansX, ansY);
-                    } else {
-                        doc.text("Ans: ____________", ansX, ansY);
+                        const textHeight = splitText.length * 5;
+                        doc.setFont("courier", "bold");
+                        doc.setFontSize(12);
+                        doc.text(`Ans: ${q.answer}`, x, y + textHeight + 5);
                     }
                 } else if (isHorizontal) {
                     // Horizontal Layout
