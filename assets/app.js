@@ -29,6 +29,18 @@ class WorksheetGenerator {
                 }
                 q.answer = q.nums.reduce((a, b) => a + b, 0);
                 q.displayOperator = '+';
+            } else if (activeOp === 'division') {
+                // Integer Division Logic
+                const dMin = Math.max(2, min1);
+                const dMax = Math.max(dMin, max1);
+
+                const divisor = Math.floor(Math.random() * (dMax - dMin + 1)) + dMin;
+                const quotient = Math.floor(Math.random() * (max2 - min2 + 1)) + min2;
+
+                q.num1 = divisor * quotient;
+                q.num2 = divisor;
+                q.answer = quotient;
+                q.displayOperator = '÷';
             } else {
                 // 2 Terms for others
                 let n1 = Math.floor(Math.random() * (max1 - min1 + 1)) + min1;

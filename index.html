@@ -52,6 +52,11 @@
                             <div class="op-name">Multiplication</div>
                             <div class="op-example">12 × 5</div>
                         </div>
+                        <div class="op-card" data-value="division" onclick="selectOperation('division')">
+                            <span class="op-icon" role="img" aria-label="Division">➗</span>
+                            <div class="op-name">Division</div>
+                            <div class="op-example">25 ÷ 5</div>
+                        </div>
                     </div>
                 </div>
 
@@ -244,7 +249,10 @@
 
         function updateCardExamples(op) {
             const examples = document.querySelectorAll('.diff-example');
-            const sym = op === 'subtraction' ? '-' : (op === 'multiplication' ? '×' : '+');
+            let sym = '+';
+            if (op === 'subtraction') sym = '-';
+            else if (op === 'multiplication') sym = '×';
+            else if (op === 'division') sym = '÷';
 
             examples.forEach((el, i) => {
                 const digits = i + 1;
@@ -289,7 +297,10 @@
         function updateLayoutPreviews() {
             const digits = currentConfig.digits || 1;
             const terms = (currentConfig.type === 'addition' || currentConfig.type === 'mixed') ? (currentConfig.terms || 2) : 2;
-            const sym = currentConfig.type === 'subtraction' ? '−' : (currentConfig.type === 'multiplication' ? '×' : '+');
+            let sym = '+';
+            if (currentConfig.type === 'subtraction') sym = '−';
+            else if (currentConfig.type === 'multiplication') sym = '×';
+            else if (currentConfig.type === 'division') sym = '÷';
 
             const getNum = (d) => {
                 if (d === 1) return 8;
