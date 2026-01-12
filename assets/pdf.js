@@ -83,9 +83,9 @@ class PDFGenerator {
                 linesPerProblem = 3; // Equivalent space of ~3 lines is plenty
             }
             if (isWordProblem) {
-                // Single column is wide, so text wraps less.
-                // Text (1-2 lines) + Answer (1 line) + Gap -> ~5 lines
-                linesPerProblem = 5;
+                // Single column with inline Answer (Right aligned).
+                // Text wraps (max 2-3 lines usually) + buffer.
+                linesPerProblem = 3;
             }
 
             // Reduced buffer from 10mm to 5mm to allow tighter packing
@@ -163,21 +163,29 @@ class PDFGenerator {
                 if (isWordProblem) {
                     doc.setFontSize(11); // Slightly smaller for text
                     doc.setFont("helvetica", "normal");
-                    const textWidth = colWidth - 20;
-                    const text = q.questionText || "Problem text missing. Please regenerate.";
+
+                    // Layout: Text on Left, Answer on Right
+                    const answerWidth = 60;
+                    const gap = 10;
+                    const textWidth = colWidth - answerWidth - gap - 5;
+
+                    const text = q.questionText || "Problem text missing.";
                     const splitText = doc.splitTextToSize(text, textWidth);
 
                     // Render wrapped text
                     doc.text(splitText, x, y);
 
-                    // Render Answer Space below text
-                    const textHeight = splitText.length * 5;
+                    // Render Answer Space on the right, aligned with the last line of text
+                    // roughly bottom-aligned gives a neat 'form' look
+                    const textHeight = (splitText.length - 1) * 5;
+                    const ansY = y + textHeight;
+                    const ansX = x + textWidth + gap;
 
-                    doc.setFont("courier", "bold"); // Switch back for numbers/line
+                    doc.setFont("courier", "bold");
                     if (isAnswerKey) {
-                        doc.text(`Answer: ${q.answer}`, x, y + textHeight + 8);
+                        doc.text(`Ans: ${q.answer}`, ansX, ansY);
                     } else {
-                        doc.text("Answer: _______________", x, y + textHeight + 8);
+                        doc.text("Ans: ______________", ansX, ansY);
                     }
                 } else if (isHorizontal) {
                     // Horizontal Layout
