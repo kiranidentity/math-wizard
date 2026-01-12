@@ -165,9 +165,13 @@ class PDFGenerator {
                     doc.setFont("helvetica", "normal");
 
                     // Layout: Text on Left, Answer on Right
-                    const answerWidth = 60;
-                    const gap = 10;
-                    const textWidth = colWidth - answerWidth - gap - 5;
+                    // Calculate TRUE available width considering the indentation 'x'
+                    const effectivePageRight = pageWidth - margin;
+                    const availableWidth = effectivePageRight - x - 5;
+
+                    const answerWidth = 55; // Enough for "Ans: ______" at 12pt
+                    const gap = 8;
+                    const textWidth = availableWidth - answerWidth - gap;
 
                     const text = q.questionText || "Problem text missing.";
                     const splitText = doc.splitTextToSize(text, textWidth);
@@ -175,17 +179,17 @@ class PDFGenerator {
                     // Render wrapped text
                     doc.text(splitText, x, y);
 
-                    // Render Answer Space on the right, aligned with the last line of text
-                    // roughly bottom-aligned gives a neat 'form' look
+                    // Render Answer Space on the right
                     const textHeight = (splitText.length - 1) * 5;
                     const ansY = y + textHeight;
                     const ansX = x + textWidth + gap;
 
+                    doc.setFontSize(12); // Reduced from 16 to fit better
                     doc.setFont("courier", "bold");
                     if (isAnswerKey) {
                         doc.text(`Ans: ${q.answer}`, ansX, ansY);
                     } else {
-                        doc.text("Ans: ______________", ansX, ansY);
+                        doc.text("Ans: ____________", ansX, ansY);
                     }
                 } else if (isHorizontal) {
                     // Horizontal Layout
