@@ -157,7 +157,8 @@
 
                 <div class="pdf-preview-mockup">
                     <p class="preview-label">Sample PDF Output:</p>
-                    <img src="assets/pdf-preview.png" alt="Math Worksheet Example Preview" class="mockup-img">
+                    <img src="assets/pdf-preview.png" alt="Math Worksheet Example Preview" class="mockup-img"
+                        onclick="openImagePreview()" style="cursor: pointer;">
                 </div>
             </section>
 
@@ -228,6 +229,12 @@
                 <script>document.write(new Date().getFullYear())</script> Math Wizard
             </p>
         </footer>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div id="image-modal" class="image-modal" onclick="closeImagePreview()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modal-img" onclick="event.stopPropagation()">
     </div>
 
     <script src="assets/vendor/jspdf.umd.min.js"></script>
@@ -468,6 +475,18 @@
                 const gen = new window.PDFGenerator();
                 gen.generate(window.lastData);
             }
+        }
+
+        function openImagePreview() {
+            const img = document.querySelector('.mockup-img');
+            if (img) {
+                document.getElementById('modal-img').src = img.src;
+                document.getElementById('image-modal').classList.add('active');
+            }
+        }
+
+        function closeImagePreview() {
+            document.getElementById('image-modal').classList.remove('active');
         }
 
         window.onload = () => {
