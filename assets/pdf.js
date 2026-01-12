@@ -54,7 +54,7 @@ class PDFGenerator {
             const digits = data.config.digits || 1;
 
             const calculateNumCols = () => {
-                if (isWordProblem) return 2; // Word problems fit well in 2 cols
+                if (isWordProblem) return 1; // Force 1 col for Statement problems as requested
                 if (!isHorizontal) return 2;
                 // --- Updated Conservative Estimation ---
                 // Char width 3.5mm, Operator space 8mm, Answer space 35mm
@@ -83,7 +83,9 @@ class PDFGenerator {
                 linesPerProblem = 3; // Equivalent space of ~3 lines is plenty
             }
             if (isWordProblem) {
-                linesPerProblem = 7; // Allocate space for text wrapping + answer line
+                // Single column is wide, so text wraps less.
+                // Text (1-2 lines) + Answer (1 line) + Gap -> ~5 lines
+                linesPerProblem = 5;
             }
 
             // Reduced buffer from 10mm to 5mm to allow tighter packing
