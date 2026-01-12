@@ -81,16 +81,16 @@ class PDFGenerator {
                 linesPerProblem = 3; // Equivalent space of ~3 lines is plenty
             }
 
-            const problemHeight = (linesPerProblem * lineSpacing) + 10; // +10mm buffer
-
-            // How many rows mathematically fit?
+            // Reduced buffer from 10mm to 5mm to allow tighter packing
+            const problemHeight = (linesPerProblem * lineSpacing) + 5;
 
             // How many rows mathematically fit?
             let rowsPerCol = Math.floor(availableHeight / problemHeight);
 
-            // Cap at 5 rows (10 items total) for aesthetic reasons, usually.
-            // BUT if it's strictly 1 col (e.g. wide horizontal), we allow up to 10 rows.
-            const maxRows = numCols === 1 ? 10 : 5;
+            // Cap rows to ensure standard density
+            // Increased cap from 5 to 8 to allow more problems per page (e.g. 16 problems)
+            // If 1 column (wide), allow up to 12.
+            const maxRows = numCols === 1 ? 12 : 8;
             if (rowsPerCol > maxRows) rowsPerCol = maxRows;
 
             const itemsPerPage = rowsPerCol * numCols;
