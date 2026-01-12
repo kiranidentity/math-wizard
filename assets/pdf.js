@@ -152,7 +152,7 @@ class PDFGenerator {
                 let pdfOp = q.displayOperator;
                 if (pdfOp === '−') pdfOp = '-';
                 if (pdfOp === '×') pdfOp = 'x';
-                if (pdfOp === '÷') pdfOp = '/';
+                if (pdfOp === '÷') pdfOp = String.fromCharCode(247);
 
                 if (isHorizontal) {
                     // Horizontal Layout
