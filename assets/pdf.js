@@ -43,8 +43,6 @@ class PDFGenerator {
                 doc.text("Name: ________________________", metaX, metaY, { align: 'right' });
                 metaY += lineHeight;
                 doc.text("Date: ________________________", metaX, metaY, { align: 'right' });
-                metaY += lineHeight;
-                doc.text(`Score: _________ / ${data.questions.length}`, metaX, metaY, { align: 'right' });
             }
 
             doc.setLineWidth(1.5);
