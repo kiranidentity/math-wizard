@@ -238,9 +238,16 @@
             if (op === 'addition') {
                 termsEl.style.display = '';
                 if (termsPreview) termsPreview.style.display = '';
+                if (termsPreview) termsPreview.style.display = '';
             } else {
                 termsEl.style.display = 'none';
                 if (termsPreview) termsPreview.style.display = 'none';
+
+                // Reset terms to 2 for non-addition operations to prevent PDF layout issues
+                currentConfig.terms = 2;
+                const termsInput = document.getElementById('q-terms');
+                if (termsInput) termsInput.value = 2;
+                updateRangeVal('terms-val', 2);
             }
 
             updateCardExamples(op);
