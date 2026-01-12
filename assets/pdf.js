@@ -49,10 +49,12 @@ class PDFGenerator {
 
             // Dynamic Layout Configuration
             const isHorizontal = data.config.layout === 'horizontal';
+            const isWordProblem = data.config.layout === 'word-problem';
             const terms = data.config.terms || 2;
             const digits = data.config.digits || 1;
 
             const calculateNumCols = () => {
+                if (isWordProblem) return 2; // Word problems fit well in 2 cols
                 if (!isHorizontal) return 2;
                 // --- Updated Conservative Estimation ---
                 // Char width 3.5mm, Operator space 8mm, Answer space 35mm
@@ -79,6 +81,9 @@ class PDFGenerator {
             if (isHorizontal) {
                 // Horizontal layout is much more compact vertically
                 linesPerProblem = 3; // Equivalent space of ~3 lines is plenty
+            }
+            if (isWordProblem) {
+                linesPerProblem = 7; // Allocate space for text wrapping + answer line
             }
 
             // Reduced buffer from 10mm to 5mm to allow tighter packing
@@ -153,7 +158,26 @@ class PDFGenerator {
                 if (pdfOp === '×') pdfOp = 'x';
                 if (pdfOp === '÷') pdfOp = String.fromCharCode(247);
 
-                if (isHorizontal) {
+                if (isWordProblem) {
+                    doc.setFontSize(11); // Slightly smaller for text
+                    doc.setFont("helvetica", "normal");
+                    const textWidth = colWidth - 20;
+                    const text = q.questionText || "Problem text missing. Please regenerate.";
+                    const splitText = doc.splitTextToSize(text, textWidth);
+
+                    // Render wrapped text
+                    doc.text(splitText, x, y);
+
+                    // Render Answer Space below text
+                    const textHeight = splitText.length * 5;
+
+                    doc.setFont("courier", "bold"); // Switch back for numbers/line
+                    if (isAnswerKey) {
+                        doc.text(`Answer: ${q.answer}`, x, y + textHeight + 8);
+                    } else {
+                        doc.text("Answer: _______________", x, y + textHeight + 8);
+                    }
+                } else if (isHorizontal) {
                     // Horizontal Layout
                     let equation = "";
                     const nums = q.nums || [q.num1, q.num2];

@@ -58,7 +58,29 @@ class WorksheetGenerator {
                 q.num2 = n2;
             }
 
+
             q.op = activeOp;
+
+            // Word Problem Integration
+            if (config.layout === 'word-problem' && window.WordProblemEngine) {
+                if (!this.wpEngine) this.wpEngine = new window.WordProblemEngine();
+
+                // Extract 2 terms for the story (Templates currently support 2 vars)
+                let n1, n2;
+                if (q.nums && q.nums.length >= 1) {
+                    n1 = q.nums[0];
+                    n2 = q.nums[1] || 0;
+                    // If we had >2 terms, we must fix the answer to match the text
+                    if (q.nums.length > 2) {
+                        q.answer = n1 + n2;
+                    }
+                } else {
+                    n1 = q.num1;
+                    n2 = q.num2;
+                }
+                q.questionText = this.wpEngine.getProblem(activeOp, n1, n2);
+            }
+
             questions.push(q);
         }
 
