@@ -337,6 +337,7 @@
             if (mode === 'tables') {
                 ind.style.transform = 'translateX(200%)';
                 currentConfig.layout = 'horizontal';
+                currentConfig.type = 'tables'; // Explicitly set type
                 secTables.style.display = 'block';
 
                 // Hide Settings irrelevant for tables
@@ -346,12 +347,18 @@
                 if (img) img.src = 'assets/Addition%20Numeric.jpeg';
             } else if (mode === 'statement') {
                 ind.style.transform = 'translateX(100%)';
+                // Reset type if coming from tables
+                if (currentConfig.type === 'tables') selectOperation('addition');
+
                 currentConfig.layout = 'word-problem';
                 secOps.style.display = 'block';
                 secDigits.style.display = 'block';
                 if (img) img.src = 'assets/Addition%20Statement.jpeg';
             } else {
                 ind.style.transform = 'translateX(0)';
+                // Reset type if coming from tables
+                if (currentConfig.type === 'tables') selectOperation('addition');
+
                 secOps.style.display = 'block';
                 secDigits.style.display = 'block';
                 secLayout.style.display = 'block';

@@ -51,7 +51,7 @@ class PDFGenerator {
 
             // --- TABLES LAYOUT BRANCH ---
             if (data.config.type === 'tables') {
-                const numCols = 2; // Strict 2 columns
+                const numCols = 1; // 1 column per page
                 const colWidth = contentWidth / numCols;
                 const startY = margin + 35;
                 const lineHeight = 10; // Tight spacing (10mm)
@@ -96,7 +96,7 @@ class PDFGenerator {
                         }
                     }
 
-                    const x = margin + (col * colWidth) + 20; // Indent
+                    const x = margin + (col * colWidth) + 60; // Centered Indent
                     const y = startY + (row * lineHeight);
 
                     let op = q.displayOperator === '×' ? 'x' : q.displayOperator;
