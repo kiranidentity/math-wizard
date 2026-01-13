@@ -144,13 +144,21 @@ class WorksheetRenderer {
 
         const isHorizontal = data.config.layout === 'horizontal';
 
-        // Decide column count
+        // Decide column count (Responsive)
+        const containerWidth = this.container.clientWidth > 0 ? this.container.clientWidth : window.innerWidth;
         let numCols = 2;
+
         if (isHorizontal) {
-            // Check if 3 columns fit (simple heuristic based on digits)
             const d = data.config.digits || 1;
             const t = data.config.terms || 2;
             if (d <= 2 && t <= 2) numCols = 3;
+        }
+
+        // Force single column on mobile to prevent overflow
+        if (containerWidth <= 600) {
+            numCols = 1;
+        } else if (containerWidth <= 900 && numCols > 2) {
+            numCols = 2;
         }
 
         const grid = document.createElement('div');
