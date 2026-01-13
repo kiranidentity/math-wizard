@@ -1,4 +1,7 @@
-const WP_NAMES = ["Riya", "Rahul", "Sam", "Tina", "Arjun", "Zara", "Leo", "Maya", "Rohan", "Priya", "Amit", "Sana", "Dev", "Eva", "Om", "Kiran", "Tara", "Vivan", "Aditi"];
+const WP_NAMES_FEMALE = ["Emma", "Olivia", "Ava", "Sophia", "Mia", "Isabella", "Luna", "Zoey", "Lily", "Sara", "Emily", "Maya", "Eva", "Anna", "Chloe", "Alice", "Grace", "Ruby"];
+const WP_NAMES_MALE = ["Liam", "Noah", "Oliver", "James", "Elijah", "Lucas", "Mason", "Logan", "Ethan", "Jacob", "Leo", "Jack", "Ryan", "Daniel", "Adam", "Ben", "Henry", "Sam"];
+const ALL_NAMES = [...WP_NAMES_FEMALE, ...WP_NAMES_MALE];
+
 const WP_OBJECTS = ["apple", "ball", "chocolate", "book", "pencil", "flower", "cookie", "coin", "marble", "sticker", "toy", "balloon", "star", "cupcake", "donut", "orange", "pen", "cap"];
 const WP_ANIMALS = ["bird", "cat", "dog", "ant", "spider", "butterfly", "fish", "duck", "rabbit", "frog"];
 
@@ -84,15 +87,17 @@ class WordProblemEngine {
         const templates = WP_TEMPLATES[op] || WP_TEMPLATES['addition'];
         let text = this.getRandomItem(templates);
 
-        const name1 = this.getRandomItem(WP_NAMES);
-        let name2 = this.getRandomItem(WP_NAMES);
-        while (name2 === name1) name2 = this.getRandomItem(WP_NAMES);
+        // Name 1 Logic (Subject) - 50/50 Chance Male/Female
+        const isGirl = Math.random() < 0.5;
+        const name1 = isGirl ? this.getRandomItem(WP_NAMES_FEMALE) : this.getRandomItem(WP_NAMES_MALE);
+
+        // Name 2 (Any gender, distinct)
+        let name2 = this.getRandomItem(ALL_NAMES);
+        while (name2 === name1) name2 = this.getRandomItem(ALL_NAMES);
 
         const obj = this.getRandomItem(WP_OBJECTS);
         const animal = this.getRandomItem(WP_ANIMALS);
 
-        // Simple gender guess based on name ending (rough heuristic for ease)
-        const isGirl = name1.endsWith('a') || ["Aditi", "Priya", "Maya", "Tina", "Eva", "Sana"].includes(name1);
         const pronounSub = isGirl ? "She" : "He";
         const pronounObj = isGirl ? "her" : "him";
 
