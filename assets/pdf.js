@@ -244,14 +244,12 @@ class PDFGenerator {
                 }
             });
 
-            // --- Footer (Brands & Page Numbers) ---
+            // --- Footer (Page Numbers) ---
             const totalPages = doc.internal.getNumberOfPages();
             for (let i = 1; i <= totalPages; i++) {
                 doc.setPage(i);
                 doc.setFontSize(9);
                 doc.setTextColor(150);
-                // Brand
-                doc.text("© KidsMathWizard.com", margin, pageHeight - 5);
                 // Page
                 doc.text(`Page ${i} of ${totalPages}`, pageWidth - margin, pageHeight - 5, { align: 'right' });
             }
