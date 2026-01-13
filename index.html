@@ -346,6 +346,7 @@
                 if (img) img.src = 'assets/Addition%20Numeric.jpeg';
             } else if (mode === 'statement') {
                 ind.style.transform = 'translateX(100%)';
+                currentConfig.layout = 'word-problem';
                 secOps.style.display = 'block';
                 secDigits.style.display = 'block';
                 if (img) img.src = 'assets/Addition%20Statement.jpeg';
@@ -354,7 +355,12 @@
                 secOps.style.display = 'block';
                 secDigits.style.display = 'block';
                 secLayout.style.display = 'block';
-                // Update Image based on layout
+
+                // Restore valid layout if coming from Statement mode
+                if (currentConfig.layout === 'word-problem') {
+                    currentConfig.layout = 'vertical';
+                }
+                // Update Image and Selection based on layout
                 selectLayout(currentConfig.layout);
             }
 
