@@ -3,6 +3,27 @@ class WorksheetGenerator {
 
     generate(config) {
         const { type, count, min1, max1, min2, max2, terms } = config;
+
+        // Tables Logic
+        if (config.mode === 'tables' || type === 'tables') {
+            const tables = config.tables || [];
+            const limit = config.tableLimit || 10;
+            const qList = [];
+
+            tables.forEach(t => {
+                for (let i = 1; i <= limit; i++) {
+                    qList.push({
+                        num1: t,
+                        num2: i,
+                        answer: t * i,
+                        displayOperator: '×',
+                        op: 'multiplication'
+                    });
+                }
+            });
+            return { questions: qList, config };
+        }
+
         const questions = [];
 
         // Logic check: Multi-term is only for Addition. Others use 2 terms.

@@ -41,10 +41,13 @@
                     <div class="mode-tab" data-mode="statement" onclick="selectMode('statement')">
                         <span style="font-size: 1.2rem; margin-right: 0.5rem;">📖</span> Statement Problems
                     </div>
+                    <div class="mode-tab" data-mode="tables" onclick="selectMode('tables')">
+                        <span style="font-size: 1.2rem; margin-right: 0.5rem;">✖️</span> Tables
+                    </div>
                     <div class="tab-indicator"></div>
                 </div>
 
-                <div class="config-section">
+                <div class="config-section" id="ops-section">
                     <h2 class="section-title"><span role="img" aria-hidden="true">⚙️</span> 1. Choose Operation</h2>
                     <div class="operations-grid">
                         <div class="op-card active" data-value="addition" onclick="selectOperation('addition')">
@@ -70,7 +73,23 @@
                     </div>
                 </div>
 
-                <div class="config-section">
+                <div id="tables-section" class="config-section" style="display:none;">
+                    <h2 class="section-title"><span role="img" aria-hidden="true">🔢</span> Select Tables</h2>
+                    <p class="section-desc">Select which multiplication tables to practice.</p>
+                    <div class="tables-grid" id="tables-grid"></div>
+
+                    <div class="setting-group" style="margin-top:2rem;">
+                        <label class="setting-label">Multiplication Range (×1 to):</label>
+                        <div class="stepper-control">
+                            <button class="stepper-btn" onclick="updateTableLimit(-1)">-</button>
+                            <input type="number" id="table-limit" value="10" min="5" max="20" readonly
+                                class="stepper-value">
+                            <button class="stepper-btn" onclick="updateTableLimit(1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section" id="digits-section">
                     <h2 class="section-title"><span role="img" aria-hidden="true">🔢</span> 2. Difficulty (Digits)</h2>
                     <div class="digits-grid">
                         <div class="diff-card active" data-digits="1" onclick="selectDigits(1)">
@@ -246,48 +265,90 @@
 
         // State
         let currentConfig = {
+            mode: 'numeric', // numeric, statement, tables
             type: 'addition',
             count: 20,
             digits: 1,
-            layout: 'vertical'
+            layout: 'vertical',
+            tables: [2, 3, 4, 5],
+            tableLimit: 10
         };
 
+        // Tables State Helper
+        let selectedTables = new Set([2, 3, 4, 5]);
+
+        function initTablesUI() {
+            const grid = document.getElementById('tables-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            for (let i = 1; i <= 20; i++) {
+                const btn = document.createElement('button');
+                btn.className = `table-btn ${selectedTables.has(i) ? 'active' : ''}`;
+                btn.innerText = i;
+                btn.onclick = () => toggleTable(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function toggleTable(n) {
+            if (selectedTables.has(n)) selectedTables.delete(n);
+            else selectedTables.add(n);
+
+            // Sync with config
+            currentConfig.tables = Array.from(selectedTables).sort((a, b) => a - b);
+
+            initTablesUI();
+            updatePreview();
+        }
+
+        function updateTableLimit(delta) {
+            let val = currentConfig.tableLimit + delta;
+            val = Math.max(5, Math.min(20, val));
+            currentConfig.tableLimit = val;
+            document.getElementById('table-limit').value = val;
+            updatePreview();
+        }
+
         function selectMode(mode) {
+            currentConfig.mode = mode;
             document.querySelectorAll('.mode-tab').forEach(el => el.classList.remove('active'));
             document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
 
-            // Move Indicator
-            const indicator = document.querySelector('.tab-indicator');
-            if (indicator) {
-                indicator.style.transform = mode === 'numeric' ? 'translateX(0)' : 'translateX(100%)';
-            }
-
-            const layoutSec = document.getElementById('layout-section');
+            const ind = document.querySelector('.tab-indicator');
             const img = document.querySelector('.mockup-img');
 
-            if (mode === 'statement') {
-                if (layoutSec) layoutSec.style.display = 'none';
-                currentConfig.layout = 'word-problem';
+            // Sections
+            const secOps = document.getElementById('ops-section');
+            const secTables = document.getElementById('tables-section');
+            const secDigits = document.getElementById('digits-section');
+            const secLayout = document.getElementById('layout-section');
 
-                const termsEl = document.getElementById('terms-setting');
-                if (termsEl) termsEl.style.display = 'none';
+            // Reset
+            secOps.style.display = 'none';
+            secTables.style.display = 'none';
+            secDigits.style.display = 'none';
+            secLayout.style.display = 'none';
 
+            if (mode === 'tables') {
+                ind.style.transform = 'translateX(200%)';
+                currentConfig.layout = 'horizontal';
+                secTables.style.display = 'block';
+                if (img) img.src = 'assets/Addition%20Numeric.jpeg'; // Use Generic
+            } else if (mode === 'statement') {
+                ind.style.transform = 'translateX(100%)';
+                secOps.style.display = 'block';
+                secDigits.style.display = 'block';
                 if (img) img.src = 'assets/Addition%20Statement.jpeg';
             } else {
-                if (layoutSec) layoutSec.style.display = 'block';
-                const activeLayout = document.querySelector('.layout-card.active');
-                currentConfig.layout = activeLayout ? activeLayout.dataset.layout : 'vertical';
-
-                if (currentConfig.type === 'addition') {
-                    const termsEl = document.getElementById('terms-setting');
-                    if (termsEl) termsEl.style.display = '';
-                }
-
-                if (img) {
-                    if (currentConfig.layout === 'horizontal') img.src = 'assets/2x2%20horizontal.jpeg';
-                    else img.src = 'assets/Addition%20Numeric.jpeg';
-                }
+                ind.style.transform = 'translateX(0)';
+                secOps.style.display = 'block';
+                secDigits.style.display = 'block';
+                secLayout.style.display = 'block';
+                // Update Image based on layout
+                selectLayout(currentConfig.layout);
             }
+
+            updatePreview();
         }
 
         function selectOperation(op) {
@@ -496,6 +557,7 @@
         }
 
         window.onload = () => {
+            initTablesUI();
             selectOperation('addition');
             selectDigits(1);
             selectLayout('vertical');
