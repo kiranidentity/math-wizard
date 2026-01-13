@@ -322,6 +322,8 @@
             const secTables = document.getElementById('tables-section');
             const secDigits = document.getElementById('digits-section');
             const secLayout = document.getElementById('layout-section');
+            const setQCount = document.getElementById('q-count-setting');
+            const setTerms = document.getElementById('terms-setting');
 
             // Reset
             secOps.style.display = 'none';
@@ -329,11 +331,19 @@
             secDigits.style.display = 'none';
             secLayout.style.display = 'none';
 
+            // Top-level settings default visibility
+            if (setQCount) setQCount.style.display = 'block';
+
             if (mode === 'tables') {
                 ind.style.transform = 'translateX(200%)';
                 currentConfig.layout = 'horizontal';
                 secTables.style.display = 'block';
-                if (img) img.src = 'assets/Addition%20Numeric.jpeg'; // Use Generic
+
+                // Hide Settings irrelevant for tables
+                if (setQCount) setQCount.style.display = 'none';
+                if (setTerms) setTerms.style.display = 'none';
+
+                if (img) img.src = 'assets/Addition%20Numeric.jpeg';
             } else if (mode === 'statement') {
                 ind.style.transform = 'translateX(100%)';
                 secOps.style.display = 'block';
