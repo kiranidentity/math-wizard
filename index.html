@@ -41,6 +41,7 @@
                     <div class="mode-tab" data-mode="statement" onclick="selectMode('statement')">
                         <span style="font-size: 1.2rem; margin-right: 0.5rem;">📖</span> Statement Problems
                     </div>
+                    <div class="tab-indicator"></div>
                 </div>
 
                 <div class="config-section">
@@ -255,6 +256,12 @@
         function selectMode(mode) {
             document.querySelectorAll('.mode-tab').forEach(el => el.classList.remove('active'));
             document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+
+            // Move Indicator
+            const indicator = document.querySelector('.tab-indicator');
+            if (indicator) {
+                indicator.style.transform = mode === 'numeric' ? 'translateX(0)' : 'translateX(100%)';
+            }
 
             const layoutSec = document.getElementById('layout-section');
             const img = document.querySelector('.mockup-img');
